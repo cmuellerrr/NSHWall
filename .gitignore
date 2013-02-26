@@ -11,3 +11,16 @@
 *.lai
 *.la
 *.a
+
+# Stuff from the previous build
+*.DS_Store
+*.plist
+*.xcodeproj
+*.xcconfig
+*.app
+*.make
+*.opensdf
+*.sdf
+*.sln
+*.suo
+*.vcxproj*
