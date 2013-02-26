@@ -5,5 +5,5 @@ An interactive display to showcase projects/people/stuff outside the Robotics In
 
 This projects requires the following addons:
 
-ofxAnimatable
-ofxFenster
+ofxAnimatable -- https://github.com/armadillu/ofxAnimatable
+ofxFenster -- https://github.com/underdoeg/ofxFenster
