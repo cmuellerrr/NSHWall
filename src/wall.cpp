@@ -13,8 +13,19 @@ float wall::TILE_H;
 
 //--------------------------------------------------------------
 void wall::setup(){
-	SCREEN_W = ofGetWindowWidth() / SCREENS;
-	SCREEN_H = ofGetWindowHeight();
+	// setup a canvas comprised of three columns in two rows, with the
+    // resolutions automatically detected from the displays.
+    //canvas.setup(this, 3, 2);
+    // or, if you want to force the resolutions of the screens:
+    //canvas.setup(this, 2, 1, 640, 480);
+    // and, if you want to force the resolutions of the screens, and put them
+    // all on one display (eg. for testing):
+	ofxDisplay * display = ofxDisplayManager::get()->getDisplays().front();
+    canvas.setup(this, SCREENS, 1, 640, 1024, display);
+	
+	
+	SCREEN_W = canvas.getWidth() / SCREENS;
+	SCREEN_H = canvas.getHeight();
 	GROUP_W = SCREEN_W - (MARGIN_GROUP * 2);
 	GROUP_H = SCREEN_H - (MARGIN_GROUP * 2);
 	TILE_W = GROUP_W / COLUMNS;
@@ -32,7 +43,13 @@ void wall::update(){
 
 //--------------------------------------------------------------
 void wall::draw(){
-	manager.draw();
+	canvas.setupPerspectiveForActiveScreen();
+
+	ofPushStyle();
+    {
+		manager.draw();
+	}
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------

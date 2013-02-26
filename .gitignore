@@ -24,3 +24,9 @@
 *.sln
 *.suo
 *.vcxproj*
+
+
+bin/
+!bin/data
+ipch/
+obj/

@@ -11,7 +11,7 @@
 #define ROWS 6
 #define COLUMNS 4
 
-class wall : public ofBaseApp{
+class wall : public ofxFensterListener{
 
 	public:
 		void setup();
@@ -37,6 +37,7 @@ class wall : public ofBaseApp{
 		static float TILE_H;
 
 	private:
+		ofxFensterCanvas canvas;
+
 		routineManager manager;
-		
 };
