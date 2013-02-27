@@ -4,9 +4,9 @@ routineManager::routineManager() {
 	std::cout<<"Setting up routine manager"<<'\n';
 	
 	activeRoutine = 0;
-	nextRoutine = 0;
+	incomingRoutine = 0;
 
-	lastHit = ofGetMinutes();
+	resetHitTimer();
 }
 
 routineManager::~routineManager() {
@@ -16,17 +16,20 @@ routineManager::~routineManager() {
 void routineManager::update() {
 	if (activeRoutine != 0) activeRoutine->update();
 	
-	if (nextRoutine == 0 && ofGetMinutes() - lastHit >= IDLE_THRESHOLD) {
-		std::cout<<"Moving to new routine due to idle time."<<'\n';
+	if (incomingRoutine == 0 && ofGetElapsedTimeMillis() - lastHit >= IDLE_THRESHOLD) {
+		std::cout<<"Moving to new routine due to idle time. "<<lastHit<<'\n';
 		//transition to new routine
 		cycleRoutine();
 	}
 
-	if (nextRoutine != 0) {
+	if (incomingRoutine != 0) {
 		if (activeRoutine->getMode() == DONE) {
-			activeRoutine = nextRoutine;
+			std::cout<<"Swaping active routine"<<'\n';
+			std::cout<<"Active Routine - "<<activeRoutine->getMode()<<'\n';
+			std::cout<<"Incoming Routine - "<<incomingRoutine->getMode()<<'\n';
+			activeRoutine = incomingRoutine;
 			activeRoutine->setMode(ENTER);
-			nextRoutine = 0;
+			incomingRoutine = 0;
 		}
 	}
 }
@@ -43,28 +46,27 @@ void routineManager::keyPressed(int key){
 void routineManager::mouseMoved(int x, int y ) {
 	if (activeRoutine != 0) {
 		bool hit = activeRoutine->mouseMoved(x, y);
-		if (hit) lastHit = ofGetMinutes();
 	}
 }
 
 void routineManager::mouseDragged(int x, int y, int button) {
 	if (activeRoutine != 0) {
 		bool hit = activeRoutine->mouseDragged(x, y, button);
-		if (hit) lastHit = ofGetMinutes();
+		if (hit) resetHitTimer();
 	}
 }
 
 void routineManager::mousePressed(int x, int y, int button) {
 	if (activeRoutine != 0) {
 		bool hit = activeRoutine->mousePressed(x, y, button);
-		if (hit) lastHit = ofGetMinutes();
+		if (hit) resetHitTimer();
 	}
 }
 
 void routineManager::mouseReleased(int x, int y, int button) {
 	if (activeRoutine != 0) {
 		bool hit = activeRoutine->mouseReleased(x, y, button);
-		if (hit) lastHit = ofGetMinutes();
+		if (hit) resetHitTimer();
 	}
 }
 
@@ -74,6 +76,7 @@ void routineManager::addRoutine(routine r){
 	if (routines.size() == 1) {
 		activeRoutine = &routines.front();
 		activeRoutine->setMode(ENTER);
+		resetHitTimer();
 	}
 }
 
@@ -89,13 +92,14 @@ void routineManager::removeRoutine(routine* r){
 void routineManager::cycleRoutine() {
 	int nextRoutineIndex = getRoutineIndex(activeRoutine) + 1;
 	if (nextRoutineIndex >= routines.size()) nextRoutineIndex = 0;
-	setNextRoutine(getRoutineAt(nextRoutineIndex));
-	lastHit = ofGetMinutes();
+	setIncomingRoutine(getRoutineAt(nextRoutineIndex));
 }
 
-void routineManager::setNextRoutine(routine* r) {
-	nextRoutine = r;
+void routineManager::setIncomingRoutine(routine* r) {
+	incomingRoutine = r;
+	incomingRoutine->setMode(DONE);
 	activeRoutine->setMode(EXIT);
+	resetHitTimer();
 }
 
 int routineManager::getRoutineIndex(routine* r) {
@@ -111,4 +115,9 @@ routine* routineManager::getRoutineAt(int index) {
     list<routine>::iterator it = routines.begin();
 	advance(it, index);
 	return &*it;
+}
+
+void routineManager::resetHitTimer() {
+	lastHit = ofGetElapsedTimeMillis();
+	std::cout<<"Resetting hit timer to "<<lastHit<<'\n';
 }

@@ -2,13 +2,11 @@
 
 routine::routine() {
 	std::cout<<"Setting up routine."<<'\n';
+	mode = DONE;
 }
 
 routine::~routine() {
 
-}
-
-void routine::setup() {
 }
 
 void routine::updateEnter() {

@@ -23,6 +23,8 @@ class routine {
 				case EXIT:
 					updateExit();
 					break;
+				case DONE:
+					break;
 			}	
 		}
 
@@ -37,10 +39,10 @@ class routine {
 				case EXIT:
 					drawExit();
 					break;
+				case DONE:
+					break;
 			}	
 		}
-
-		void setup();
 
 		void updateEnter();
 		void updateActive();

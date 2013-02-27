@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "routine.h"
 
-#define IDLE_THRESHOLD 1
+#define IDLE_THRESHOLD 15000
 
 class routineManager {
 
@@ -25,15 +25,17 @@ class routineManager {
 		void removeRoutine(routine* r);
 
 		void cycleRoutine();
-		void setNextRoutine(routine* r);
+		void setIncomingRoutine(routine* r);
    
     private:
 		int getRoutineIndex(routine* r);
 		routine* getRoutineAt(int index);
+		void resetHitTimer();
+
 
 		list<routine> routines;
 	    routine* activeRoutine;
-		routine* nextRoutine;
+		routine* incomingRoutine;
 
-		long lastHit;
+		unsigned long lastHit;
 };
