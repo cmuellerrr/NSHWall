@@ -1,11 +1,20 @@
+/*
+ * A class representing tiles in their simplest form.  They hold the basic information
+ * that is presented by the wall.  This class was written to be subclassed to tailor
+ * tile behavior to the type of information being presented.
+ *
+ * TODO Still haven't decided if the exapnded version of a tile should be a separate
+ * class or just a state whithin this one.
+ */
+
 #include "wall.h"
 #include "tile.h"
 
-
-tile::tile() {
-	
-}
-
+/*
+ * Create a tile with the given logical posion and size.  The actual position and
+ * size are determined based off of the static variables created in the wall class.
+ * You may also specity if tiles are clickable or not.
+ */
 tile::tile(float column, float row, float columnSpan, float rowSpan, bool click) {
 	
 	clickable = click;
@@ -26,13 +35,19 @@ tile::~tile() {
 	
 }
 
+/*
+ * Update the tile.  We really only care if it is animating.
+ */
 void tile::update() {
 	if (path.isOrWillBeAnimating()) {
 		path.update(1.0f / ofGetFrameRate());
 		tileRect.setPosition(path.getCurrentPosition());
 	}
 }
-		
+
+/*
+ * Draw the tile.
+ */
 void tile::draw() {
 	ofPushStyle();
 
@@ -41,6 +56,10 @@ void tile::draw() {
 
 	ofPopStyle();
 }
+
+/*
+ * Handle all input.  Return if something happened.
+ */
 
 bool tile::mouseMoved(int x, int y)  {
 	return false;
@@ -58,10 +77,16 @@ bool tile::mouseReleased(int x, int y, int button) {
 	return false;
 }
 
+/*
+ * Return if the tile is, or will be, animating.
+ */
 bool tile::isAnimating() {
 	return path.isOrWillBeAnimating();
 }
 
+/*
+ * Set up the tile's entrance to the wall.
+ */
 void tile::setupEntrance(int edge) {
 	//Move the tile off screen
 	path.setPosition(getOffscreenPosition(edge));
@@ -73,6 +98,9 @@ void tile::setupEntrance(int edge) {
 	path.setCurve(EASE_IN_EASE_OUT);
 }
 
+/*
+ * Set up the tile's exit from the wall.
+ */
 void tile::setupExit(int edge) {
 	//Animate to its offscreen position
 	path.animateToAfterDelay(getOffscreenPosition(edge), ofRandom(.5));
@@ -81,6 +109,11 @@ void tile::setupExit(int edge) {
 	path.setCurve(EASE_IN_EASE_OUT);
 }
 
+/*
+ * Get a point representing some offscreen position for the given edge.
+ * So, if edge is the left edge, it will return a point guaranteed to 
+ * be offscreen and to the left of the wall.
+ */
 ofPoint tile::getOffscreenPosition(int edge) {
 	ofPoint p = ofPoint(finalPosition);
 

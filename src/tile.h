@@ -3,13 +3,13 @@
 #include "ofMain.h"
 #include "ofxAnimatableOfPoint.h"
 
+//The margin surrounding an individual tile
 #define MARGIN_TILE 5
 
 class tile {
 
     public:
 
-        tile();
 		tile(float column, float row, float columnSpan, float rowSpan, bool click = true);
 		~tile();
 

@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "routine.h"
 
+//How long, in milliseconds, a routine may stay idle before
+//transitioning to a new routine.
 #define IDLE_THRESHOLD 15000
 
 class routineManager {

@@ -1,3 +1,9 @@
+/*
+ * A class that handles the creation of routines, tile groups, and tiles.
+ * This should be used to ease the burden on other classes when getting 
+ * the info from the CMS.
+ */
+
 #pragma once
 
 #include "ofMain.h"
@@ -8,6 +14,9 @@ class routineFactory {
 
     public:
 
+		/*
+		 * Create a test routine based on the number of sceens (up to 3)
+		 */
 		static routine getTestRoutine() {
 			routine testRoutine = routine();
 

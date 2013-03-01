@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "tileGroup.h"
 
+//Represent the possible states of a routine.
 enum{ENTER, ACTIVE, EXIT, DONE};
 
 class routine {

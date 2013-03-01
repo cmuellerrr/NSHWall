@@ -1,16 +1,16 @@
 #pragma once
 
 #include "ofMain.h"
-
 #include "ofxFensterManager.h"
 #include "ofxFensterCanvas.h"
-
 #include "routineManager.h"
 
+//General variable for the wall
 #define SCREENS 3
 #define ROWS 6
 #define COLUMNS 4
 
+//Representing edges of the overall wall.
 enum{EDGE_LEFT, EDGE_TOP, EDGE_BOTTOM, EDGE_RIGHT};
 
 class wall : public ofxFensterListener{

@@ -1,3 +1,11 @@
+/*
+ *
+ * Class representing the overall wall application.  Sets up some static 
+ * variables regarding the environment before initializing the other helper
+ * objects.
+ *
+ */
+
 #include "wall.h"
 #include "routineFactory.h"
 
@@ -11,7 +19,10 @@ float wall::GROUP_H;
 float wall::TILE_W;
 float wall::TILE_H;
 
-//--------------------------------------------------------------
+/*
+ * Setup the wall.  Initialize the Fenster canvas and set the static
+ * variables and helper objects.
+ */
 void wall::setup(){
 	// setup a canvas comprised of three columns in two rows, with the
     // resolutions automatically detected from the displays.
@@ -31,17 +42,23 @@ void wall::setup(){
 	TILE_W = GROUP_W / COLUMNS;
 	TILE_H = GROUP_H / ROWS;
 
+	//Get some test routines
 	manager.addRoutine(routineFactory::getTestRoutine());
 	manager.addRoutine(routineFactory::getTestRoutine());
 	manager.addRoutine(routineFactory::getTestRoutine());
 }
 
-//--------------------------------------------------------------
+/*
+ * Update the wall.  Just route to the routine manager.
+ */
 void wall::update(){
 	manager.update();
 }
 
-//--------------------------------------------------------------
+/*
+ * Draw the wall.  We need to setup the perspective for 
+ * the fenster windows before drawing the application.
+ */
 void wall::draw(){
 	canvas.setupPerspectiveForActiveScreen();
 
@@ -52,47 +69,42 @@ void wall::draw(){
     ofPopStyle();
 }
 
-//--------------------------------------------------------------
+/*
+ * Handle input to the application.  We'll comment these in classes where it 
+ * actually has some kind of logic and doesn't just route to another class.
+ */
 void wall::keyPressed(int key){
 	manager.keyPressed(key);
 }
 
-//--------------------------------------------------------------
 void wall::keyReleased(int key){
 
 }
 
-//--------------------------------------------------------------
 void wall::mouseMoved(int x, int y ){
 	manager.mouseMoved(x, y);
 }
 
-//--------------------------------------------------------------
 void wall::mouseDragged(int x, int y, int button){
 	manager.mouseDragged(x, y, button);
 }
 
-//--------------------------------------------------------------
 void wall::mousePressed(int x, int y, int button){
 	manager.mousePressed(x, y, button);
 }
 
-//--------------------------------------------------------------
 void wall::mouseReleased(int x, int y, int button){
 	manager.mouseReleased(x, y, button);
 }
 
-//--------------------------------------------------------------
 void wall::windowResized(int w, int h){
 
 }
 
-//--------------------------------------------------------------
 void wall::gotMessage(ofMessage msg){
 
 }
 
-//--------------------------------------------------------------
 void wall::dragEvent(ofDragInfo dragInfo){ 
 
 }

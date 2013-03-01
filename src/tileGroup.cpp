@@ -1,6 +1,15 @@
+/*
+ * A class to represent groups of tiles.  A tile group is essentially 
+ * representing one of the wall's screens.  This acts as another manager
+ * class.
+ */
+
 #include "wall.h"
 #include "tileGroup.h"
 
+/*
+ * Setup the tile group within the given bounds.
+ */
 tileGroup::tileGroup(ofRectangle bounds) {
 	boundingBox = bounds;
 	focus = 0;
@@ -25,6 +34,10 @@ tileGroup::~tileGroup() {
 	
 }
 
+/*
+ * Update the tile group.  If one of the tiles is focused, then only update
+ * that one.
+ */
 void tileGroup::update() {
 	if (focus == 0) {
 		for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
@@ -34,7 +47,11 @@ void tileGroup::update() {
 		focus->update();
 	}
 }
-		
+
+/*
+ * Draw the tile group.  If one tile is focused, then draw the expanded version on top of the 
+ * overall group.  Make sure to translate to the bounding box so tile draw correctly.
+ */
 void tileGroup::draw() {
 	ofPushMatrix();
 	ofTranslate(boundingBox.getPosition());
@@ -50,6 +67,10 @@ void tileGroup::draw() {
 	ofPopStyle();
 	ofPopMatrix();
 }
+
+/*
+ * Handle all input.  Route to the tiles and make note when something happens.
+ */
 
 bool tileGroup::mouseMoved(int x, int y)  {
 	bool hit = false;
@@ -99,10 +120,16 @@ bool tileGroup::mouseReleased(int x, int y, int button) {
 	return hit;
 }
 
+/*
+ * Add a tile to the group.
+ */
 void tileGroup::addTile(tile t) {
 	tiles.push_back(t);
 }
 
+/*
+ * Return whether or not the tile group is, or is about to be, animating.
+ */
 bool tileGroup::isAnimating() {
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		if (it->isAnimating()) return true;
@@ -111,18 +138,33 @@ bool tileGroup::isAnimating() {
 	return false;
 }
 
+/*
+ * Setup the tile group's entrance onto the wall.  Set each tile to come in 
+ * from a random edge.
+ */
 void tileGroup::setupEntrance() {
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		it->setupEntrance(randomScreenEdge());
 	}
 }
 
+/*
+ * Setup the tile group's exit from the wall.  Set each tile to exit the 
+ * screen from random edge.
+ */
 void tileGroup::setupExit() {
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		it->setupExit(randomScreenEdge());
 	}
 }
 
+/*
+ * Determine a random edge of the wall.  This is based on the relative 
+ * position of the tile group - so the far left group can only deal with
+ * the left, top, and bottom edges of the screen, etc.
+ *
+ * Default to the top of the screen.
+ */
 int tileGroup::randomScreenEdge() {
 	int edge = EDGE_TOP;
 	
