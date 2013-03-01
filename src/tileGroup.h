@@ -5,6 +5,8 @@
 
 #define MARGIN_GROUP 10
 
+enum{FARLEFT, MIDDLE, FARRIGHT};
+
 class tileGroup {
 
     public:
@@ -29,8 +31,12 @@ class tileGroup {
 		void setupExit();
 
     private:
+		int randomScreenEdge();
+		
+		int relativePosition;
+
 		ofRectangle boundingBox;
-		ofColor background;
+		ofColor tileColor;
 
 	    list<tile> tiles;
 		tile* focus;

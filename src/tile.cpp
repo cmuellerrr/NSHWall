@@ -62,20 +62,44 @@ bool tile::isAnimating() {
 	return path.isOrWillBeAnimating();
 }
 
-void tile::setupEntrance() {
+void tile::setupEntrance(int edge) {
 	//Move the tile off screen
-	path.setPosition(ofPoint(-ofGetWindowWidth() * SCREENS, finalPosition.y));
+	path.setPosition(getOffscreenPosition(edge));
 	
-	//Animate to its
+	//Animate to the desired position
 	path.animateToAfterDelay(finalPosition, ofRandom(.5));
 	path.setDuration(1.5);
 	path.setRepeatType(PLAY_ONCE);
 	path.setCurve(EASE_IN_EASE_OUT);
 }
 
-void tile::setupExit() {
-	path.animateToAfterDelay(ofPoint(finalPosition.x, -ofGetWindowHeight()), ofRandom(.5));
+void tile::setupExit(int edge) {
+	//Animate to its offscreen position
+	path.animateToAfterDelay(getOffscreenPosition(edge), ofRandom(.5));
 	path.setDuration(1.5);
 	path.setRepeatType(PLAY_ONCE);
 	path.setCurve(EASE_IN_EASE_OUT);
+}
+
+ofPoint tile::getOffscreenPosition(int edge) {
+	ofPoint p = ofPoint(finalPosition);
+
+	switch (edge) {
+		case EDGE_LEFT:
+				p.x = -ofGetWindowWidth() * SCREENS;
+			break;
+		case EDGE_TOP:
+				p.y = -ofGetWindowHeight();
+			break;
+		case EDGE_RIGHT:
+				p.x = ofGetWindowWidth() * SCREENS;
+			break;
+		case EDGE_BOTTOM:
+				p.y = ofGetWindowHeight() * 2;
+			break;
+		default:
+			break;
+	}
+
+	return p;
 }

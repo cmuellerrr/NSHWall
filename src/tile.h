@@ -23,10 +23,12 @@ class tile {
 
 		bool isAnimating();
 
-		void setupEntrance();
-		void setupExit();
+		void setupEntrance(int edge);
+		void setupExit(int edge);
 
     protected:
+		ofPoint getOffscreenPosition(int edge);
+
 		bool clickable;
 		ofPoint finalPosition;
 

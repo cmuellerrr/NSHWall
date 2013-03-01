@@ -11,6 +11,8 @@
 #define ROWS 6
 #define COLUMNS 4
 
+enum{EDGE_LEFT, EDGE_TOP, EDGE_BOTTOM, EDGE_RIGHT};
+
 class wall : public ofxFensterListener{
 
 	public:
