@@ -1,12 +1,16 @@
+#ifndef VIEW_H
+#define VIEW_H
+
 #pragma once
 
 #include "ofMain.h"
 #include "ofxAnimatableOfPoint.h"
+#include "ofxLibRocketCustomElement.h"
 
 //The margin surrounding an individual tile
 #define MARGIN_TILE 5
 
-class tile {
+class tile : ofxLibRocketCustomElement {
 
     public:
 
@@ -37,3 +41,5 @@ class tile {
 		ofRectangle gridRect;
 		ofRectangle tileRect;
 };
+
+#endif VIEW_H

@@ -14,6 +14,7 @@ float wall::SCREEN_W;
 float wall::SCREEN_H;
 float wall::GROUP_W;
 float wall::GROUP_H;
+float wall::ASPECT_RATIO;
 //NOTE: these tile values include the margin, so they need to be
 //accounted for when creating tiles.
 float wall::TILE_W;
@@ -24,6 +25,9 @@ float wall::TILE_H;
  * variables and helper objects.
  */
 void wall::setup(){
+    
+    ASPECT_RATIO = 16.0f/9.0f;
+    
 	// setup a canvas comprised of three columns in two rows, with the
     // resolutions automatically detected from the displays.
     //canvas.setup(this, 3, 2);
@@ -32,8 +36,7 @@ void wall::setup(){
     // and, if you want to force the resolutions of the screens, and put them
     // all on one display (eg. for testing):
 	ofxDisplay * display = ofxDisplayManager::get()->getDisplays().front();
-    canvas.setup(this, SCREENS, 1, 640, 1024, display);
-	
+    canvas.setup(this, SCREENS, 1, 1280 / 3, ASPECT_RATIO * 1280 / 3.0f, display);
 	
 	SCREEN_W = canvas.getWidth() / SCREENS;
 	SCREEN_H = canvas.getHeight();
@@ -41,6 +44,13 @@ void wall::setup(){
 	GROUP_H = SCREEN_H - (MARGIN_GROUP * 2);
 	TILE_W = GROUP_W / COLUMNS;
 	TILE_H = GROUP_H / ROWS;
+    
+    int count = 0;
+    for (list<ofxScreen *>::iterator it = canvas.screens.begin(); it != canvas.screens.end(); it++) {
+        ofxScreen * s = &**it;
+        s->window->setWindowPosition(SCREEN_W * count++, 0);
+        s->window->setBorder(false);
+    }
 
 	//Get some test routines
 	manager.addRoutine(routineFactory::getTestRoutine());

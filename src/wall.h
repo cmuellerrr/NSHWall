@@ -37,6 +37,7 @@ class wall : public ofxFensterListener{
 		static float GROUP_H;
 		static float TILE_W;
 		static float TILE_H;
+        static float ASPECT_RATIO;
 
 	private:
 		ofxFensterCanvas canvas;
