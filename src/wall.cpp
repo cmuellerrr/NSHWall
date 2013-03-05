@@ -48,7 +48,7 @@ void wall::setup(){
     int count = 0;
     for (list<ofxScreen *>::iterator it = canvas.screens.begin(); it != canvas.screens.end(); it++) {
         ofxScreen * s = &**it;
-        s->window->setWindowPosition(SCREEN_W * count++, 0);
+        s->window->setWindowPosition(10 + (SCREEN_W + 10) * count++, 0);
         s->window->setBorder(false);
     }
 
