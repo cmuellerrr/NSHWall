@@ -43,12 +43,7 @@ class tile : ofxLibRocketCustomElement {
 
 		ofRectangle gridRect;
 		ofRectangle tileRect;
-<<<<<<< HEAD
+        featureTile feature;
 };
 
 #endif VIEW_H
-=======
-
-		featureTile feature;
-};
->>>>>>> master
