@@ -13,23 +13,22 @@
 //Representing edges of the overall wall.
 enum{EDGE_LEFT, EDGE_TOP, EDGE_BOTTOM, EDGE_RIGHT};
 
-class wall : public ofxFensterListener{
+class wall : public ofxFensterListener {
 
 	public:
 		void setup();
 		void update();
 		void draw();
 
-		void keyPressed  (int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void windowResized(int w, int h);
+		void keyPressed(int key, ofxFenster* f);
+		void keyReleased(int key, ofxFenster* f);
+		void mouseMoved(int x, int y, ofxFenster* f);
+		void mouseDragged(int x, int y, int button, ofxFenster* f);
+		void mousePressed(int x, int y, int button, ofxFenster* f);
+		void mouseReleased(int x, int y, int button, ofxFenster* f);
+		void windowResized(int w, int h, ofxFenster* f);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
 
 		static float SCREEN_W;
 		static float SCREEN_H;
@@ -40,6 +39,8 @@ class wall : public ofxFensterListener{
         static float ASPECT_RATIO;
 
 	private:
+		int getWindowIndex(ofxFenster* f);
+
 		ofxFensterCanvas canvas;
 
 		routineManager manager;

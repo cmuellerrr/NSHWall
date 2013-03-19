@@ -21,13 +21,13 @@ class routineFactory {
 			routine testRoutine = routine();
 
 			if (SCREENS >= 1) {
-					testRoutine.addGroup(getTestTiles1(ofRectangle(MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
+					testRoutine.addGroup(getTestTiles1(ofRectangle(MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 0));
 			
 				if (SCREENS >= 2) {
-					testRoutine.addGroup(getTestTiles2(ofRectangle(wall::SCREEN_W + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
+					testRoutine.addGroup(getTestTiles2(ofRectangle(wall::SCREEN_W + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 1));
 				
 					if (SCREENS >= 3) {
-						testRoutine.addGroup(getTestTiles3(ofRectangle((wall::SCREEN_W * 2) + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
+						testRoutine.addGroup(getTestTiles3(ofRectangle((wall::SCREEN_W * 2) + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 2));
 					}
 				}
 			}
@@ -35,8 +35,8 @@ class routineFactory {
 			return testRoutine;
 		}
 
-        static tileGroup getTestTiles1(ofRectangle bounds) {
-			tileGroup testGroup = tileGroup(bounds);
+        static tileGroup getTestTiles1(ofRectangle bounds, int index) {
+			tileGroup testGroup = tileGroup(bounds, index);
 			
 			testGroup.addTile(tile(0, 1, 2, 2));
 			testGroup.addTile(tile(2, 1, 2, 1));
@@ -49,8 +49,8 @@ class routineFactory {
 			return testGroup;
 		}
 
-		static tileGroup getTestTiles2(ofRectangle bounds) {
-			tileGroup testGroup = tileGroup(bounds);
+		static tileGroup getTestTiles2(ofRectangle bounds, int index) {
+			tileGroup testGroup = tileGroup(bounds, index);
 			
 			testGroup.addTile(tile(0, 0, 4, .5));
 			testGroup.addTile(tile(0, 1, 1, 1));
@@ -68,8 +68,8 @@ class routineFactory {
 			return testGroup;
 		}
 
-		static tileGroup getTestTiles3(ofRectangle bounds) {
-			tileGroup testGroup = tileGroup(bounds);
+		static tileGroup getTestTiles3(ofRectangle bounds, int index) {
+			tileGroup testGroup = tileGroup(bounds, index);
 			
 			testGroup.addTile(tile(0, 1, 1.5, 2));
 			testGroup.addTile(tile(1.5, 1, 2.5, 2));

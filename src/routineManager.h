@@ -17,11 +17,11 @@ class routineManager {
         void update();
         void draw();
 
-		void keyPressed(int key);
-        void mouseMoved(int x, int y);
-        void mouseDragged(int x, int y, int button);
-        void mousePressed(int x, int y, int button);
-        void mouseReleased(int x, int y, int button);
+		void keyPressed(int key, int screen);
+        void mouseMoved(int x, int y, int screen);
+        void mouseDragged(int x, int y, int button, int screen);
+        void mousePressed(int x, int y, int button, int screen);
+        void mouseReleased(int x, int y, int button, int screen);
 
 		void addRoutine(routine r);
 		void removeRoutine(routine* r);

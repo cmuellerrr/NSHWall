@@ -16,7 +16,7 @@
  */
 routine::routine() {
 	std::cout<<"Setting up routine."<<'\n';
-	mode = DONE;
+	mode = HIDDEN;
 }
 
 routine::~routine() {
@@ -61,7 +61,7 @@ void routine::updateExit() {
 		if (it->isAnimating()) allDone = false;
 	}
 
-	if (allDone) setMode(DONE);
+	if (allDone) setMode(HIDDEN);
 }
 
 /*
@@ -100,42 +100,53 @@ void routine::drawExit() {
  * Handle all input.  Just pass to the tile groups.
  */
 
+//TODO: we can find a better way of comparing the group index.
+//Maybe their index within the group list should match?  But what
+//if we go to a 2D set of displays?
 
-bool routine::mouseMoved(int x, int y)  {
+bool routine::mouseMoved(int x, int y, int screen)  {
 	bool hit = false;
 	if (mode == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-			if (it->mouseMoved(x, y)) hit = true;
+			if(it->getIndex() == screen) {
+				if (it->mouseMoved(x, y)) hit = true;
+			}
 		}
 	}
 	return hit;
 }
 
-bool routine::mouseDragged(int x, int y, int button) {
+bool routine::mouseDragged(int x, int y, int button, int screen) {
 	bool hit = false;
 	if (mode == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-			if (it->mouseDragged(x, y, button)) hit = true;
+			if(it->getIndex() == screen) {
+				if (it->mouseDragged(x, y, button)) hit = true;
+			}
 		}
 	}
 	return hit;
 }
         
-bool routine::mousePressed(int x, int y, int button) {
+bool routine::mousePressed(int x, int y, int button, int screen) {
 	bool hit = false;
 	if (mode == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-			if (it->mousePressed(x, y, button)) hit = true;
+			if(it->getIndex() == screen) {
+				if (it->mousePressed(x, y, button)) hit = true;
+			}
 		}
 	}
 	return hit;
 }
         
-bool routine::mouseReleased(int x, int y, int button) {
+bool routine::mouseReleased(int x, int y, int button, int screen) {
 	bool hit = false;
 	if (mode == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-			if (it->mouseReleased(x, y, button)) hit = true;
+			if(it->getIndex() == screen) {
+				if (it->mouseReleased(x, y, button)) hit = true;
+			}
 		}
 	}
 	return hit;

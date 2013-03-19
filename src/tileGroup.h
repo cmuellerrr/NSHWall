@@ -2,20 +2,17 @@
 
 #include "ofMain.h"
 #include "tile.h"
+#include "featureTile.h"
 
 //The margin surrounding a tile group.
 #define MARGIN_GROUP 10
-
-//Representing the relative position of a tile group compared 
-//to the entire wall
-enum{FARLEFT, MIDDLE, FARRIGHT};
 
 class tileGroup {
 
     public:
 
         tileGroup();
-		tileGroup(ofRectangle bounds);
+		tileGroup(ofRectangle bounds, int i);
 		~tileGroup();
 
 		void update();
@@ -33,14 +30,16 @@ class tileGroup {
 		void setupEntrance();
 		void setupExit();
 
+		int getIndex() {return index;}
+
     private:
 		int randomScreenEdge();
 		
-		int relativePosition;
+		int index;
 
 		ofRectangle boundingBox;
 		ofColor tileColor;
 
 	    list<tile> tiles;
-		tile* focus;
+		featureTile* focus;
 };

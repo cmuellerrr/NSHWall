@@ -4,7 +4,7 @@
 #include "tileGroup.h"
 
 //Represent the possible states of a routine.
-enum{ENTER, ACTIVE, EXIT, DONE};
+enum{ENTER, ACTIVE, EXIT, HIDDEN};
 
 class routine {
 
@@ -24,7 +24,7 @@ class routine {
 				case EXIT:
 					updateExit();
 					break;
-				case DONE:
+				case HIDDEN:
 					break;
 			}	
 		}
@@ -40,7 +40,7 @@ class routine {
 				case EXIT:
 					drawExit();
 					break;
-				case DONE:
+				case HIDDEN:
 					break;
 			}	
 		}
@@ -53,10 +53,10 @@ class routine {
 		void drawActive();
 		void drawExit();
 
-        bool mouseMoved(int x, int y);
-        bool mouseDragged(int x, int y, int button);
-        bool mousePressed(int x, int y, int button);
-        bool mouseReleased(int x, int y, int button);
+        bool mouseMoved(int x, int y, int screen);
+        bool mouseDragged(int x, int y, int button, int screen);
+        bool mousePressed(int x, int y, int button, int screen);
+        bool mouseReleased(int x, int y, int button, int screen);
 
 		void setMode(int newMode);
 		int getMode() {return mode;}

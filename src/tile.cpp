@@ -27,8 +27,9 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, bool click)
 	int h = (wall::TILE_H * rowSpan) - (MARGIN_TILE * 2);
 
 	finalPosition = ofPoint(x, y);
-
 	tileRect = ofRectangle(finalPosition, w, h);
+
+	position.setPosition(finalPosition);
 }
 
 tile::~tile() {
@@ -39,9 +40,9 @@ tile::~tile() {
  * Update the tile.  We really only care if it is animating.
  */
 void tile::update() {
-	if (path.isOrWillBeAnimating()) {
-		path.update(1.0f / ofGetFrameRate());
-		tileRect.setPosition(path.getCurrentPosition());
+	if (position.isOrWillBeAnimating()) {
+		position.update(1.0f / ofGetFrameRate());
+		tileRect.setPosition(position.getCurrentPosition());
 	}
 }
 
@@ -70,6 +71,11 @@ bool tile::mouseDragged(int x, int y, int button) {
 }
         
 bool tile::mousePressed(int x, int y, int button) {
+	if (clickable && tileRect.inside(x, y)) {
+		cout<<"HIT at "<<x<<" "<<y<<"\n";
+		feature.setMode(ENTER);
+		return true;
+	}
 	return false;
 }
         
@@ -81,7 +87,7 @@ bool tile::mouseReleased(int x, int y, int button) {
  * Return if the tile is, or will be, animating.
  */
 bool tile::isAnimating() {
-	return path.isOrWillBeAnimating();
+	return position.isOrWillBeAnimating();
 }
 
 /*
@@ -89,13 +95,13 @@ bool tile::isAnimating() {
  */
 void tile::setupEntrance(int edge) {
 	//Move the tile off screen
-	path.setPosition(getOffscreenPosition(edge));
+	position.setPosition(getOffscreenPosition(edge));
 	
 	//Animate to the desired position
-	path.animateToAfterDelay(finalPosition, ofRandom(.5));
-	path.setDuration(1.5);
-	path.setRepeatType(PLAY_ONCE);
-	path.setCurve(EASE_IN_EASE_OUT);
+	position.animateToAfterDelay(finalPosition, ofRandom(.5));
+	position.setDuration(1.5);
+	position.setRepeatType(PLAY_ONCE);
+	position.setCurve(TANH);
 }
 
 /*
@@ -103,10 +109,10 @@ void tile::setupEntrance(int edge) {
  */
 void tile::setupExit(int edge) {
 	//Animate to its offscreen position
-	path.animateToAfterDelay(getOffscreenPosition(edge), ofRandom(.5));
-	path.setDuration(1.5);
-	path.setRepeatType(PLAY_ONCE);
-	path.setCurve(EASE_IN_EASE_OUT);
+	position.animateToAfterDelay(getOffscreenPosition(edge), ofRandom(.5));
+	position.setDuration(1.5);
+	position.setRepeatType(PLAY_ONCE);
+	position.setCurve(TANH);
 }
 
 /*
