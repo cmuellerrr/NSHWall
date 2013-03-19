@@ -33,8 +33,7 @@ void wall::setup(){
     // all on one display (eg. for testing):
 	ofxDisplay * display = ofxDisplayManager::get()->getDisplays().front();
     canvas.setup(this, SCREENS, 1, 640, 1024, display);
-	
-	
+
 	SCREEN_W = canvas.getWidth() / SCREENS;
 	SCREEN_H = canvas.getHeight();
 	GROUP_W = SCREEN_W - (MARGIN_GROUP * 2);
@@ -73,31 +72,31 @@ void wall::draw(){
  * Handle input to the application.  We'll comment these in classes where it 
  * actually has some kind of logic and doesn't just route to another class.
  */
-void wall::keyPressed(int key){
-	manager.keyPressed(key);
+void wall::keyPressed(int key, ofxFenster* f){
+	manager.keyPressed(key, getWindowIndex(f));
 }
 
-void wall::keyReleased(int key){
+void wall::keyReleased(int key, ofxFenster* f){
 
 }
 
-void wall::mouseMoved(int x, int y ){
-	manager.mouseMoved(x, y);
+void wall::mouseMoved(int x, int y, ofxFenster* f){
+	manager.mouseMoved(x, y, getWindowIndex(f));
 }
 
-void wall::mouseDragged(int x, int y, int button){
-	manager.mouseDragged(x, y, button);
+void wall::mouseDragged(int x, int y, int button, ofxFenster* f){
+	manager.mouseDragged(x, y, button, getWindowIndex(f));
 }
 
-void wall::mousePressed(int x, int y, int button){
-	manager.mousePressed(x, y, button);
+void wall::mousePressed(int x, int y, int button, ofxFenster* f){
+	manager.mousePressed(x, y, button, getWindowIndex(f));
 }
 
-void wall::mouseReleased(int x, int y, int button){
-	manager.mouseReleased(x, y, button);
+void wall::mouseReleased(int x, int y, int button, ofxFenster* f){
+	manager.mouseReleased(x, y, button, getWindowIndex(f));
 }
 
-void wall::windowResized(int w, int h){
+void wall::windowResized(int w, int h, ofxFenster* f){
 
 }
 
@@ -107,4 +106,15 @@ void wall::gotMessage(ofMessage msg){
 
 void wall::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//Determine the window index based off of the provided fenster.
+//We are only returning the x portion of the index right now, but if
+//the wall were to change to multiple dimensions of screens, then 
+//we can deal with the index object.
+int wall::getWindowIndex(ofxFenster* f) {
+	for (list<ofxScreen*>::iterator it = canvas.screens.begin(); it != canvas.screens.end(); it++) {
+		if((*it)->window == f) return (*it)->index.x;
+	}
+	return -1;
 }

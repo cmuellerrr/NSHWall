@@ -36,7 +36,7 @@ class routineFactory {
 		}
 
         static tileGroup getTestTiles1(ofRectangle bounds) {
-			tileGroup testGroup = tileGroup(bounds);
+			tileGroup testGroup = tileGroup(bounds, 0);
 			
 			testGroup.addTile(tile(0, 1, 2, 2));
 			testGroup.addTile(tile(2, 1, 2, 1));
@@ -50,7 +50,7 @@ class routineFactory {
 		}
 
 		static tileGroup getTestTiles2(ofRectangle bounds) {
-			tileGroup testGroup = tileGroup(bounds);
+			tileGroup testGroup = tileGroup(bounds, 1);
 			
 			testGroup.addTile(tile(0, 0, 4, .5));
 			testGroup.addTile(tile(0, 1, 1, 1));
@@ -69,7 +69,7 @@ class routineFactory {
 		}
 
 		static tileGroup getTestTiles3(ofRectangle bounds) {
-			tileGroup testGroup = tileGroup(bounds);
+			tileGroup testGroup = tileGroup(bounds, 2);
 			
 			testGroup.addTile(tile(0, 1, 1.5, 2));
 			testGroup.addTile(tile(1.5, 1, 2.5, 2));

@@ -10,23 +10,12 @@
 /*
  * Setup the tile group within the given bounds.
  */
-tileGroup::tileGroup(ofRectangle bounds) {
+tileGroup::tileGroup(ofRectangle bounds, int i) {
+	index = i;
 	boundingBox = bounds;
+
 	focus = 0;
-
-	//Determine the group's position relative to the entire
-	//wall.  Meaning, is it the far left, far right, or one 
-	//of the middle screens.
-	if (bounds.x <= wall::SCREEN_W) {
-		relativePosition = FARLEFT;
-	//I don't wan to make the fenster canvas accessible from here,
-	//so just compute the distance.
-	} else if (bounds.x >= wall::SCREEN_W * (SCREENS - 1)) {
-		relativePosition = FARRIGHT;
-	} else {
-		relativePosition = MIDDLE;
-	}
-
+	
 	tileColor = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
 }
 
@@ -171,9 +160,9 @@ int tileGroup::randomScreenEdge() {
 	//Because of the way the enumeration was setup
 	//we can just generate a random number between the
 	//values.
-	if (relativePosition == FARLEFT) {
+	if (index == 0) {
 		edge = (int)ofRandom(EDGE_LEFT, EDGE_BOTTOM+1);
-	} else if (relativePosition == FARRIGHT) {
+	} else if (index == SCREENS-1) {
 		edge = (int)ofRandom(EDGE_TOP, EDGE_RIGHT+1);
 	} else {
 		edge = (int)ofRandom(EDGE_TOP, EDGE_BOTTOM+1);

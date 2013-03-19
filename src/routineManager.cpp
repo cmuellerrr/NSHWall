@@ -64,34 +64,35 @@ void routineManager::draw() {
  */
 
 
-void routineManager::keyPressed(int key){
+void routineManager::keyPressed(int key, int screen){
 	if (key == OF_KEY_RIGHT) cycleRoutine();
 }
 
 
-void routineManager::mouseMoved(int x, int y ) {
+void routineManager::mouseMoved(int x, int y, int screen) {
 	if (activeRoutine != 0) {
-		bool hit = activeRoutine->mouseMoved(x, y);
+		bool hit = activeRoutine->mouseMoved(x, y, screen);
 	}
 }
 
-void routineManager::mouseDragged(int x, int y, int button) {
+void routineManager::mouseDragged(int x, int y, int button, int screen) {
 	if (activeRoutine != 0) {
-		bool hit = activeRoutine->mouseDragged(x, y, button);
+		bool hit = activeRoutine->mouseDragged(x, y, button, screen);
 		if (hit) resetHitTimer();
 	}
 }
 
-void routineManager::mousePressed(int x, int y, int button) {
+void routineManager::mousePressed(int x, int y, int button, int screen) {
+	cout<<"Mouse press on screen "<<screen<<"\n";
 	if (activeRoutine != 0) {
-		bool hit = activeRoutine->mousePressed(x, y, button);
+		bool hit = activeRoutine->mousePressed(x, y, button, screen);
 		if (hit) resetHitTimer();
 	}
 }
 
-void routineManager::mouseReleased(int x, int y, int button) {
+void routineManager::mouseReleased(int x, int y, int button, int screen) {
 	if (activeRoutine != 0) {
-		bool hit = activeRoutine->mouseReleased(x, y, button);
+		bool hit = activeRoutine->mouseReleased(x, y, button, screen);
 		if (hit) resetHitTimer();
 	}
 }

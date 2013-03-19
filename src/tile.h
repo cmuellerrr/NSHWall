@@ -32,7 +32,7 @@ class tile {
 		bool clickable;
 		ofPoint finalPosition;
 
-		ofxAnimatableOfPoint path;
+		ofxAnimatableOfPoint position;
 
 		ofRectangle gridRect;
 		ofRectangle tileRect;
