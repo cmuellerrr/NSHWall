@@ -36,7 +36,7 @@ void wall::setup(){
     // and, if you want to force the resolutions of the screens, and put them
     // all on one display (eg. for testing):
 	ofxDisplay * display = ofxDisplayManager::get()->getDisplays().front();
-    canvas.setup(this, SCREENS, 1, 1280 / 3, ASPECT_RATIO * 1280 / 3.0f, display);
+    canvas.setup(this, SCREENS, 1, 1280 / 3, ASPECT_RATIO * 1280 / 3, display);
 	
 	SCREEN_W = canvas.getWidth() / SCREENS;
 	SCREEN_H = canvas.getHeight();
