@@ -95,7 +95,6 @@ void routine::drawExit() {
 	drawActive();
 }
 
-
 /*
  * Handle all input.  Just pass to the tile groups.
  */
@@ -151,7 +150,6 @@ bool routine::mouseReleased(int x, int y, int button, int screen) {
 	}
 	return hit;
 }
-
 
 /*
  * Set the wall's current mode.  Take care of setting up the 

@@ -62,13 +62,13 @@ class routine {
 		int getMode() {return mode;}
   
 		void addGroup(tileGroup g);
-    
-		void setupEntrance();
-		void setupExit();
 
 	protected:
 		int mode;
 		
 	private:
+		void setupEntrance();
+		void setupExit();
+
 		list<tileGroup> groups;
 };
