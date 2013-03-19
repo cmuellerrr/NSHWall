@@ -28,11 +28,11 @@ tileGroup::~tileGroup() {
  * that one.
  */
 void tileGroup::update() {
-	if (focus == 0) {
-		for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			it->update();
-		}
-	} else {
+	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		it->update();
+	}
+
+	if (focus != 0) {
 		focus->update();
 		if (focus->getMode() == HIDDEN) {
 			focus = 0;
@@ -54,6 +54,7 @@ void tileGroup::draw() {
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		it->draw();
 	}
+
 	if (focus != 0) focus->draw();
 
 	ofPopStyle();
@@ -126,6 +127,8 @@ void tileGroup::addTile(tile t) {
  * Return whether or not the tile group is, or is about to be, animating.
  */
 bool tileGroup::isAnimating() {
+	if (focus != 0) return true;
+
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		if (it->isAnimating()) return true;
 	}
@@ -145,9 +148,12 @@ void tileGroup::setupEntrance() {
 
 /*
  * Setup the tile group's exit from the wall.  Set each tile to exit the 
- * screen from random edge.
+ * screen from random edge.  If there is a focused tile, make sure that 
+ * gets set to disappear.
  */
 void tileGroup::setupExit() {
+	if (focus != 0) focus->setMode(EXIT);
+
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		it->setupExit(randomScreenEdge());
 	}
