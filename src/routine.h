@@ -4,7 +4,7 @@
 #include "tileGroup.h"
 
 //Represent the possible states of a routine.
-enum{ENTER, ACTIVE, EXIT, DONE};
+enum{ENTER, ACTIVE, EXIT, HIDDEN};
 
 class routine {
 
@@ -24,7 +24,7 @@ class routine {
 				case EXIT:
 					updateExit();
 					break;
-				case DONE:
+				case HIDDEN:
 					break;
 			}	
 		}
@@ -40,7 +40,7 @@ class routine {
 				case EXIT:
 					drawExit();
 					break;
-				case DONE:
+				case HIDDEN:
 					break;
 			}	
 		}

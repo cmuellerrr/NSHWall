@@ -16,7 +16,7 @@
  */
 routine::routine() {
 	std::cout<<"Setting up routine."<<'\n';
-	mode = DONE;
+	mode = HIDDEN;
 }
 
 routine::~routine() {
@@ -61,7 +61,7 @@ void routine::updateExit() {
 		if (it->isAnimating()) allDone = false;
 	}
 
-	if (allDone) setMode(DONE);
+	if (allDone) setMode(HIDDEN);
 }
 
 /*

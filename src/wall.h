@@ -13,7 +13,7 @@
 //Representing edges of the overall wall.
 enum{EDGE_LEFT, EDGE_TOP, EDGE_BOTTOM, EDGE_RIGHT};
 
-class wall : public ofxFensterListener{
+class wall : public ofxFensterListener {
 
 	public:
 		void setup();
@@ -29,7 +29,6 @@ class wall : public ofxFensterListener{
 		void windowResized(int w, int h, ofxFenster* f);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
 
 		static float SCREEN_W;
 		static float SCREEN_H;

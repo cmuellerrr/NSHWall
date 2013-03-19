@@ -39,7 +39,7 @@ void routineManager::update() {
 
 	//Switch to the incoming routine if the outgoing one has finished
 	if (incomingRoutine != 0) {
-		if (activeRoutine->getMode() == DONE) {
+		if (activeRoutine->getMode() == HIDDEN) {
 			std::cout<<"Swaping active routine"<<'\n';
 			std::cout<<"Active Routine - "<<activeRoutine->getMode()<<'\n';
 			std::cout<<"Incoming Routine - "<<incomingRoutine->getMode()<<'\n';
@@ -141,8 +141,8 @@ void routineManager::cycleRoutine() {
  */
 void routineManager::setIncomingRoutine(routine* r) {
 	incomingRoutine = r;
-	//Probably not necessary to set this to DONE
-	incomingRoutine->setMode(DONE);
+	//Probably not necessary to set this to HIDDEN
+	incomingRoutine->setMode(HIDDEN);
 	activeRoutine->setMode(EXIT);
 	resetHitTimer();
 }

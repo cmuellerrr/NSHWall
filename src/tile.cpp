@@ -27,10 +27,9 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, bool click)
 	int h = (wall::TILE_H * rowSpan) - (MARGIN_TILE * 2);
 
 	finalPosition = ofPoint(x, y);
+	tileRect = ofRectangle(finalPosition, w, h);
 
 	position.setPosition(finalPosition);
-
-	tileRect = ofRectangle(finalPosition, w, h);
 }
 
 tile::~tile() {
@@ -73,8 +72,9 @@ bool tile::mouseDragged(int x, int y, int button) {
         
 bool tile::mousePressed(int x, int y, int button) {
 	if (clickable && tileRect.inside(x, y)) {
-		cout<<"HIT at "<<x<<" "<<y<<"\n"; 
-		tileRect.setHeight(tileRect.getHeight() + 10);
+		cout<<"HIT at "<<x<<" "<<y<<"\n";
+		feature.setMode(ENTER);
+		return true;
 	}
 	return false;
 }
@@ -101,7 +101,7 @@ void tile::setupEntrance(int edge) {
 	position.animateToAfterDelay(finalPosition, ofRandom(.5));
 	position.setDuration(1.5);
 	position.setRepeatType(PLAY_ONCE);
-	position.setCurve(EASE_IN_EASE_OUT);
+	position.setCurve(TANH);
 }
 
 /*
@@ -112,7 +112,7 @@ void tile::setupExit(int edge) {
 	position.animateToAfterDelay(getOffscreenPosition(edge), ofRandom(.5));
 	position.setDuration(1.5);
 	position.setRepeatType(PLAY_ONCE);
-	position.setCurve(EASE_IN_EASE_OUT);
+	position.setCurve(TANH);
 }
 
 /*

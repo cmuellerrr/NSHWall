@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "tile.h"
+#include "featureTile.h"
 
 //The margin surrounding a tile group.
 #define MARGIN_GROUP 10
@@ -40,5 +41,5 @@ class tileGroup {
 		ofColor tileColor;
 
 	    list<tile> tiles;
-		tile* focus;
+		featureTile* focus;
 };

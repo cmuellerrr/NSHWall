@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxAnimatableOfPoint.h"
+#include "featureTile.h"
 
 //The margin surrounding an individual tile
 #define MARGIN_TILE 5
@@ -26,6 +27,8 @@ class tile {
 		void setupEntrance(int edge);
 		void setupExit(int edge);
 
+		featureTile* getFeature() {return &feature;}
+
     protected:
 		ofPoint getOffscreenPosition(int edge);
 
@@ -36,4 +39,6 @@ class tile {
 
 		ofRectangle gridRect;
 		ofRectangle tileRect;
+
+		featureTile feature;
 };

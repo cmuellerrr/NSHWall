@@ -34,6 +34,9 @@ void tileGroup::update() {
 		}
 	} else {
 		focus->update();
+		if (focus->getMode() == HIDDEN) {
+			focus = 0;
+		}
 	}
 }
 
@@ -89,7 +92,10 @@ bool tileGroup::mousePressed(int x, int y, int button) {
 	bool hit = false;
 	if (focus == 0) {
 		for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			if (it->mousePressed(x, y, button)) hit = true;
+			if (it->mousePressed(x, y, button)) {
+				hit = true;
+				focus = it->getFeature();
+			}
 		}
 	} else {
 		if (focus->mousePressed(x, y, button)) hit = true;
