@@ -14,8 +14,9 @@
 /*
  * Default constructor.
  */
-routine::routine() {
-	std::cout<<"Setting up routine."<<'\n';
+routine::routine(int i) {
+	std::cout<<"Setting up routine ("<<i<<")."<<'\n';
+	id = i;
 	mode = HIDDEN;
 }
 
@@ -156,9 +157,8 @@ bool routine::mouseReleased(int x, int y, int button, int screen) {
  * tile groups in accordance with the new mode.
  */
 void routine::setMode(int newMode) {
-	std::cout<<"Setting routine mode to "<<newMode<<'\n';
-	mode = newMode;
-	switch (mode) {
+	std::cout<<"Setting routine ("<<id<<") mode to "<<newMode<<'\n';
+	switch (newMode) {
 		case ENTER:
 			setupEntrance();
 			break;
@@ -166,7 +166,7 @@ void routine::setMode(int newMode) {
 			setupExit();
 			break;
 	}	
-
+	mode = newMode;
 }
 
 /*
@@ -174,6 +174,36 @@ void routine::setMode(int newMode) {
  */
 void routine::addGroup(tileGroup g) {
 	groups.push_back(g);
+}
+
+void routine::removeGroup(tileGroup* g) {
+	int index = getGroupIndex(g);
+    list<tileGroup>::iterator it = groups.begin();
+	if (index >= 0) {
+		advance(it, index);
+		groups.erase(it);
+	}
+}
+
+/*
+ * Get the index of the given tile group.
+ */
+int routine::getGroupIndex(tileGroup* g) {
+	int index = 0;
+	for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
+		if (&*it == g) return index;
+		index++;
+	}
+	return -1;
+}
+
+/*
+ * Get a pointer to the tileGroup at the specified index.
+ */
+tileGroup* routine::getGroupAt(int index) {
+    list<tileGroup>::iterator it = groups.begin();
+	advance(it, index);
+	return &*it;
 }
 
 /*

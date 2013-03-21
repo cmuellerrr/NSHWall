@@ -42,9 +42,9 @@ void wall::setup(){
 	TILE_H = GROUP_H / ROWS;
 
 	//Get some test routines
-	manager.addRoutine(routineFactory::getTestRoutine());
-	manager.addRoutine(routineFactory::getTestRoutine());
-	manager.addRoutine(routineFactory::getTestRoutine());
+	manager.addRoutine(routineFactory::getTestRoutine(111));
+	manager.addRoutine(routineFactory::getTestRoutine(222));
+	manager.addRoutine(routineFactory::getTestRoutine(333));
 }
 
 /*

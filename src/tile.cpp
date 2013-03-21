@@ -96,7 +96,8 @@ bool tile::isAnimating() {
 void tile::setupEntrance(int edge) {
 	//Move the tile off screen
 	position.setPosition(getOffscreenPosition(edge));
-	
+	tileRect.setPosition(position.getCurrentPosition());
+
 	//Animate to the desired position
 	position.animateToAfterDelay(finalPosition, ofRandom(.5));
 	position.setDuration(1.5);
