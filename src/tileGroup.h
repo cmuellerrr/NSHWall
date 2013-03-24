@@ -23,18 +23,22 @@ class tileGroup {
         bool mousePressed(int x, int y, int button);
         bool mouseReleased(int x, int y, int button);
 
-		void addTile(tile t);
-
-		bool isAnimating();
-
 		void setupEntrance();
 		void setupExit();
+
+		void addTile(tile t);
+		void removeTile(tile* t);
+
+		bool isAnimating();
 
 		int getIndex() {return index;}
 
     private:
 		int randomScreenEdge();
-		
+
+		int getTileIndex(tile* t);
+		tile* getTileAt(int index);
+
 		int index;
 
 		ofRectangle boundingBox;

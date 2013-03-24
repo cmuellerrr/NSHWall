@@ -28,12 +28,13 @@ class routineManager {
 
 		void cycleRoutine();
 		void setIncomingRoutine(routine* r);
+		void switchToIncomingRoutine();
    
     private:
 		int getRoutineIndex(routine* r);
 		routine* getRoutineAt(int index);
-		void resetHitTimer();
 
+		void resetHitTimer();
 
 		list<routine> routines;
 	    routine* activeRoutine;

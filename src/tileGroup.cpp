@@ -124,6 +124,39 @@ void tileGroup::addTile(tile t) {
 }
 
 /*
+ * Remove the given tile from the group.
+ */
+void tileGroup::removeTile(tile* t) {
+	int index = getTileIndex(t);
+    list<tile>::iterator it = tiles.begin();
+	if (index >= 0) {
+		advance(it, index);
+		tiles.erase(it);
+	}
+}
+
+/*
+ * Get the index of the given tile.
+ */
+int tileGroup::getTileIndex(tile* t) {
+	int index = 0;
+	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		if (&*it == t) return index;
+		index++;
+	}
+	return -1;
+}
+
+/*
+ * Get a pointer to the tile at the specified index.
+ */
+tile* tileGroup::getTileAt(int index) {
+    list<tile>::iterator it = tiles.begin();
+	advance(it, index);
+	return &*it;
+}
+
+/*
  * Return whether or not the tile group is, or is about to be, animating.
  */
 bool tileGroup::isAnimating() {

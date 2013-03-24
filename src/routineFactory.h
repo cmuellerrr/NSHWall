@@ -17,8 +17,8 @@ class routineFactory {
 		/*
 		 * Create a test routine based on the number of sceens (up to 3)
 		 */
-		static routine getTestRoutine() {
-			routine testRoutine = routine();
+		static routine getTestRoutine(int id) {
+			routine testRoutine = routine(id);
 
 			if (SCREENS >= 1) {
 					testRoutine.addGroup(getTestTiles1(ofRectangle(MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 0));

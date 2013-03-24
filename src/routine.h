@@ -10,7 +10,7 @@ class routine {
 
     public:
 
-		routine();
+		routine(int id);
 		~routine();
 
         void update() {
@@ -58,10 +58,12 @@ class routine {
         bool mousePressed(int x, int y, int button, int screen);
         bool mouseReleased(int x, int y, int button, int screen);
 
+		int getId() {return id;}
 		void setMode(int newMode);
 		int getMode() {return mode;}
   
 		void addGroup(tileGroup g);
+		void removeGroup(tileGroup* g);
 
 	protected:
 		int mode;
@@ -70,5 +72,9 @@ class routine {
 		void setupEntrance();
 		void setupExit();
 
+		int getGroupIndex(tileGroup* g);
+		tileGroup* getGroupAt(int index);
+
+		int id;
 		list<tileGroup> groups;
 };

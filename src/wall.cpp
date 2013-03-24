@@ -53,9 +53,9 @@ void wall::setup(){
     }
 
 	//Get some test routines
-	manager.addRoutine(routineFactory::getTestRoutine());
-	manager.addRoutine(routineFactory::getTestRoutine());
-	manager.addRoutine(routineFactory::getTestRoutine());
+	manager.addRoutine(routineFactory::getTestRoutine(111));
+	manager.addRoutine(routineFactory::getTestRoutine(222));
+	manager.addRoutine(routineFactory::getTestRoutine(333));
 }
 
 /*

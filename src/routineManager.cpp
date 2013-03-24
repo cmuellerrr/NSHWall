@@ -10,7 +10,7 @@
  * Default constructor.
  */
 routineManager::routineManager() {
-	std::cout<<"Setting up routine manager"<<'\n';
+	std::cout<<"Setting up routine manager."<<'\n';
 	
 	activeRoutine = 0;
 	incomingRoutine = 0;
@@ -31,8 +31,9 @@ void routineManager::update() {
 	if (activeRoutine != 0) activeRoutine->update();
 	
 	//If nobody has interacted with it in a while
-	if (incomingRoutine == 0 && ofGetElapsedTimeMillis() - lastHit >= IDLE_THRESHOLD) {
-		std::cout<<"Moving to new routine due to idle time. "<<lastHit<<'\n';
+	long idleTime = ofGetElapsedTimeMillis() - lastHit;
+	if (incomingRoutine == 0 && idleTime >= IDLE_THRESHOLD) {
+		cout<<"Wall has been idle for "<<idleTime<<" milliseconds.\n";
 		//transition to new routine
 		cycleRoutine();
 	}
@@ -40,12 +41,8 @@ void routineManager::update() {
 	//Switch to the incoming routine if the outgoing one has finished
 	if (incomingRoutine != 0) {
 		if (activeRoutine->getMode() == HIDDEN) {
-			std::cout<<"Swaping active routine"<<'\n';
-			std::cout<<"Active Routine - "<<activeRoutine->getMode()<<'\n';
-			std::cout<<"Incoming Routine - "<<incomingRoutine->getMode()<<'\n';
-			activeRoutine = incomingRoutine;
-			activeRoutine->setMode(ENTER);
-			incomingRoutine = 0;
+			cout<<"Active routine done exiting.\n";
+			switchToIncomingRoutine();
 		}
 	}
 }
@@ -62,7 +59,6 @@ void routineManager::draw() {
  * Handle all input.  Just pass it to the active routine and
  * take note when anything actually happens.
  */
-
 
 void routineManager::keyPressed(int key, int screen){
 	if (key == OF_KEY_RIGHT) cycleRoutine();
@@ -130,6 +126,8 @@ void routineManager::removeRoutine(routine* r){
  * If you are at the end then cycle back to the beginnig.
  */
 void routineManager::cycleRoutine() {
+	cout<<"Cycling to next routine.\n";
+
 	int nextRoutineIndex = getRoutineIndex(activeRoutine) + 1;
 	if (nextRoutineIndex >= routines.size()) nextRoutineIndex = 0;
 	setIncomingRoutine(getRoutineAt(nextRoutineIndex));
@@ -140,11 +138,21 @@ void routineManager::cycleRoutine() {
  * the currently active routine to exit.  
  */
 void routineManager::setIncomingRoutine(routine* r) {
+	cout<<"Setting incoming routine ("<<r->getId()<<").\n";
+	
 	incomingRoutine = r;
 	//Probably not necessary to set this to HIDDEN
 	incomingRoutine->setMode(HIDDEN);
 	activeRoutine->setMode(EXIT);
 	resetHitTimer();
+}
+
+void routineManager::switchToIncomingRoutine() {
+	std::cout<<"Switching to incoming routine ("<<incomingRoutine->getId()<<").\n";
+
+	activeRoutine = incomingRoutine;
+	activeRoutine->setMode(ENTER);
+	incomingRoutine = 0;
 }
 
 /*
