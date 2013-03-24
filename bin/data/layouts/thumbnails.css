@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<head>
-<style>
-	.thumbnail {
+    .thumbnail {
 		position: relative;
 		background-color: blue;
 		background: url(chris.jpg);
@@ -38,24 +35,3 @@
 		padding: 3%;
 		overflow: hidden;
 	}
-</style>
-</head>
-
-<body>
-	<div class="thumbnail smallSquare">
-		<div class="title">Chris Harrison named an "Innovator to Watch"</div>
-	</div>
-
-	</br>
-
-	<div class="thumbnail mediumSquare">
-		<div class="title">Chris Harrison named an "Innovator to Watch"</div>
-	</div>
-
-	</br>
-
-	<div class="thumbnail mediumWide">
-		<div class="title">Chris Harrison named an "Innovator to Watch"</div>
-	</div>
-</body>
-</html>
