@@ -5,8 +5,9 @@
 
 #include "ofMain.h"
 #include "ofxAnimatableOfPoint.h"
-#include "ofxLibRocketCustomElement.h"
 #include "featureTile.h"
+#include "ofxLibRocket.h"
+
 
 //The margin surrounding an individual tile
 #define MARGIN_TILE 5
@@ -15,7 +16,7 @@ class tile : ofxLibRocketCustomElement {
 
     public:
 
-		tile(float column, float row, float columnSpan, float rowSpan, bool click = true);
+        tile(float column, float row, float columnSpan, float rowSpan, ofxLibRocket &libRocket, bool click = true);
 		~tile();
 
 		void update();
@@ -44,6 +45,11 @@ class tile : ofxLibRocketCustomElement {
 		ofRectangle gridRect;
 		ofRectangle tileRect;
         featureTile feature;
+    
+        Rocket::Core::String tileId;
+    
+    private:
+        Rocket::Core::Context * context;
 };
 
 #endif VIEW_H

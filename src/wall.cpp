@@ -52,10 +52,15 @@ void wall::setup(){
         s->window->setBorder(false);
     }
 
+    libRocket.loadFont("fonts/TitilliumWeb-Light.ttf");
+    libRocket.loadFont("fonts/TitilliumWeb-Bold.ttf");
+    libRocket.setup();
+    
 	//Get some test routines
-	manager.addRoutine(routineFactory::getTestRoutine(111));
-	manager.addRoutine(routineFactory::getTestRoutine(222));
-	manager.addRoutine(routineFactory::getTestRoutine(333));
+	manager.addRoutine(routineFactory::getTestRoutine(111, libRocket));
+	manager.addRoutine(routineFactory::getTestRoutine(222, libRocket));
+	manager.addRoutine(routineFactory::getTestRoutine(333, libRocket));
+    
 }
 
 /*

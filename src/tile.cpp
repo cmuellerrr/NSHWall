@@ -15,7 +15,7 @@
  * size are determined based off of the static variables created in the wall class.
  * You may also specity if tiles are clickable or not.
  */
-tile::tile(float column, float row, float columnSpan, float rowSpan, bool click) {
+tile::tile(float column, float row, float columnSpan, float rowSpan, ofxLibRocket &libRocket, bool click) {
 	
 	clickable = click;
 	
@@ -30,6 +30,13 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, bool click)
 	tileRect = ofRectangle(finalPosition, w, h);
 
 	position.setPosition(finalPosition);
+    
+    stringstream randomNumber;
+    randomNumber << (rand() % 4294967296);
+    tileId = randomNumber.str().c_str();
+    
+    context = Rocket::Core::CreateContext(tileId, Rocket::Core::Vector2i(w,h));
+    libRocket.loadDocument("layouts/small-thumbnail.html", context);
 }
 
 tile::~tile() {
@@ -44,6 +51,7 @@ void tile::update() {
 		position.update(1.0f / ofGetFrameRate());
 		tileRect.setPosition(position.getCurrentPosition());
 	}
+    context->Update();
 }
 
 /*

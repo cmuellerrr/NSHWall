@@ -4,6 +4,7 @@
 #include "ofxFensterManager.h"
 #include "ofxFensterCanvas.h"
 #include "routineManager.h"
+#include "ofxLibRocket.h"
 
 //General variable for the wall
 #define SCREENS 3
@@ -29,6 +30,8 @@ class wall : public ofxFensterListener {
 		void windowResized(int w, int h, ofxFenster* f);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+    
+        static ofxLibRocket getOfxLibRocket(wall &instance);
 
 		static float SCREEN_W;
 		static float SCREEN_H;
@@ -37,6 +40,9 @@ class wall : public ofxFensterListener {
 		static float TILE_W;
 		static float TILE_H;
         static float ASPECT_RATIO;
+    
+        ofxLibRocket libRocket;
+        ofxLibRocketDocument* doc;
 
 	private:
 		int getWindowIndex(ofxFenster* f);

@@ -1,12 +1,14 @@
+    body {
+        font-family: "Titillium Web Light";
+    }
+    
     .thumbnail {
 		position: relative;
-		background-color: blue;
-		background: url(chris.jpg);
-		background-size: cover;
-		background-repeat: no-repeat;
+		background-decorator: image;
+        background-image-src: chris.jpg;
 	}
 
-	.thumbnail.smallSquare {
+	.thumbnail.small-square {
 		width: 200px;
 		height: 200px;
 		font-size: 12pt;

@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "routine.h"
+#include "ofxLibRocket.h"
 
 //How long, in milliseconds, a routine may stay idle before
 //transitioning to a new routine.
