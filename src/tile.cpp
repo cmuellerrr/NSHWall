@@ -35,6 +35,8 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, ofxLibRocke
     randomNumber << (rand() % 4294967296);
     tileId = randomNumber.str().c_str();
     
+    cout << "[CONTEXT ID] " << randomNumber.str().c_str() << "\n";
+    
     context = Rocket::Core::CreateContext(tileId, Rocket::Core::Vector2i(w,h));
     libRocket.loadDocument("layouts/small-thumbnail.html", context);
 }
@@ -51,7 +53,6 @@ void tile::update() {
 		position.update(1.0f / ofGetFrameRate());
 		tileRect.setPosition(position.getCurrentPosition());
 	}
-    context->Update();
 }
 
 /*
@@ -64,6 +65,8 @@ void tile::draw() {
 	ofRect(tileRect);
 
 	ofPopStyle();
+    context->Update();
+    context->Render();
 }
 
 /*
