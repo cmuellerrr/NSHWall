@@ -2,9 +2,6 @@
  * A class representing tiles in their simplest form.  They hold the basic information
  * that is presented by the wall.  This class was written to be subclassed to tailor
  * tile behavior to the type of information being presented.
- *
- * TODO Still haven't decided if the exapnded version of a tile should be a separate
- * class or just a state whithin this one.
  */
 
 #include "wall.h"

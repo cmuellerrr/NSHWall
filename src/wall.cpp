@@ -8,6 +8,7 @@
 
 #include "wall.h"
 #include "routineFactory.h"
+#include "webInterface.h"
 
 //Need to define the static variables in global scope.
 float wall::SCREEN_W;
@@ -45,6 +46,8 @@ void wall::setup(){
 	manager.addRoutine(routineFactory::getTestRoutine(111));
 	manager.addRoutine(routineFactory::getTestRoutine(222));
 	manager.addRoutine(routineFactory::getTestRoutine(333));
+
+	cout<<webInterface::getActiveRoutines();
 }
 
 /*
