@@ -26,7 +26,7 @@
 *.vcxproj*
 
 
-bin/
-!bin/data
+/bin/*
+!/bin/data
 ipch/
 obj/
