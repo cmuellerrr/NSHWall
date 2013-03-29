@@ -13,7 +13,12 @@
  * You may also specity if tiles are clickable or not.
  */
 tile::tile(float column, float row, float columnSpan, float rowSpan, bool click) {
-	
+	cout<<"Setting up tile \n";
+
+	id = 0;
+	title = "";
+	content = "";
+
 	clickable = click;
 	
 	gridRect = ofRectangle(column, row, columnSpan, rowSpan);
@@ -25,8 +30,6 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, bool click)
 
 	finalPosition = ofPoint(x, y);
 	tileRect = ofRectangle(finalPosition, w, h);
-
-	position.setPosition(finalPosition);
 }
 
 tile::~tile() {
@@ -37,9 +40,15 @@ tile::~tile() {
  * Update the tile.  We really only care if it is animating.
  */
 void tile::update() {
-	if (position.isOrWillBeAnimating()) {
-		position.update(1.0f / ofGetFrameRate());
-		tileRect.setPosition(position.getCurrentPosition());
+	for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
+		if ((*it)->isDone()) {
+			delete *it;
+			it = animations.erase(it);
+		}
+		else {
+			(*it)->update();
+			++it;
+		}
 	}
 }
 
@@ -84,7 +93,7 @@ bool tile::mouseReleased(int x, int y, int button) {
  * Return if the tile is, or will be, animating.
  */
 bool tile::isAnimating() {
-	return position.isOrWillBeAnimating();
+	return !animations.empty();
 }
 
 /*
@@ -92,25 +101,15 @@ bool tile::isAnimating() {
  */
 void tile::setupEntrance(int edge) {
 	//Move the tile off screen
-	position.setPosition(getOffscreenPosition(edge));
-	tileRect.setPosition(position.getCurrentPosition());
-
-	//Animate to the desired position
-	position.animateToAfterDelay(finalPosition, ofRandom(.5));
-	position.setDuration(1.5);
-	position.setRepeatType(PLAY_ONCE);
-	position.setCurve(TANH);
+	tileRect.setPosition(getOffscreenPosition(edge));
+	animations.push_front(new pointAnimation(&tileRect.position, finalPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 }
 
 /*
  * Set up the tile's exit from the wall.
  */
 void tile::setupExit(int edge) {
-	//Animate to its offscreen position
-	position.animateToAfterDelay(getOffscreenPosition(edge), ofRandom(.5));
-	position.setDuration(1.5);
-	position.setRepeatType(PLAY_ONCE);
-	position.setCurve(TANH);
+	animations.push_front(new pointAnimation(&tileRect.position, getOffscreenPosition(edge), 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 }
 
 /*

@@ -13,10 +13,7 @@ featureTile::featureTile() {
 	int h = (wall::TILE_H * (ROWS - 2));
 
 	finalSize = ofPoint(w, h);
-	tileRect = ofRectangle(x, y, w, h);
-
-	//We are hacking this point to represent the width and height
-	size.setPosition(ofPoint(0, 0));
+	tileRect = ofRectangle(x, y, 0, 0);
 }
 
 featureTile::~featureTile() {
@@ -28,12 +25,17 @@ featureTile::~featureTile() {
  * Update the tile.  We really only care if it is animating.
  */
 void featureTile::update() {
-	if (size.isOrWillBeAnimating()) {
-		size.update(1.0f / ofGetFrameRate());
-		tileRect.setWidth(size.getCurrentPosition().x);
-		tileRect.setHeight(size.getCurrentPosition().y);
+	for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
+		if ((*it)->isDone()) {
+			delete *it;
+			it = animations.erase(it);
+		}
+		else {
+			(*it)->update();
+			++it;
+		}
 	}
-	if (mode == EXIT && size.hasFinishedAnimating()) mode = HIDDEN;
+	if (mode == EXIT && animations.empty()) mode = HIDDEN;\
 }
 
 /*
@@ -63,7 +65,7 @@ bool featureTile::mouseDragged(int x, int y, int button) {
         
 bool featureTile::mousePressed(int x, int y, int button) {
 	if (tileRect.inside(x, y)) {
-		cout<<"HIT at "<<x<<" "<<y<<"\n"; 
+		cout<<"HIT at "<<x<<" "<<y<<"\n";
 		setMode(EXIT);
 	}
 	return false;
@@ -77,7 +79,7 @@ bool featureTile::mouseReleased(int x, int y, int button) {
  * Return if the tile is, or will be, animating.
  */
 bool featureTile::isAnimating() {
-	return size.isOrWillBeAnimating();
+	return !animations.empty();\
 }
 
 
@@ -85,25 +87,14 @@ bool featureTile::isAnimating() {
  * Set up the tile's entrance to the wall.
  */
 void featureTile::setupEntrance() {
-	//Move the tile off screen
-	//position.setPosition(getOffscreenPosition(edge));
-	
-	//Animate to the desired position
-	size.animateTo(finalSize);
-	size.setDuration(.3);
-	size.setRepeatType(PLAY_ONCE);
-	size.setCurve(BOUNCY);
+	animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, finalSize, .3, BOUNCY));
 }
 
 /*
  * Set up the tile's exit from the wall.
  */
 void featureTile::setupExit() {
-	//Animate to its offscreen position
-	size.animateTo(ofPoint(0, 0));
-	size.setDuration(.3);
-	size.setRepeatType(PLAY_ONCE);
-	size.setCurve(BOUNCY);
+	animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, ofPoint(0, 0), .3, BOUNCY));
 }
 
 void featureTile::setMode(int newMode) {

@@ -16,8 +16,13 @@
  */
 routine::routine(int i) {
 	std::cout<<"Setting up routine ("<<i<<")."<<'\n';
-	id = i;
+	
 	mode = HIDDEN;
+	
+	id = i;
+	name = "";
+	start = 0;
+	end = 0;
 }
 
 routine::~routine() {

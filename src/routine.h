@@ -76,5 +76,8 @@ class routine {
 		tileGroup* getGroupAt(int index);
 
 		int id;
+		string name;
+		unsigned int start;
+		unsigned int end;
 		list<tileGroup> groups;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxAnimatableOfPoint.h"
 #include "routine.h"
+#include "dimensionAnimation.h"
 
 //The margin surrounding a feature story
 #define MARGIN_FEATURE 5
@@ -30,11 +30,12 @@ class featureTile {
 		void setMode(int newMode);
 		int getMode() {return mode;}
 
-    protected:
+    private:
 		int mode;
 
 		ofPoint finalSize;
-		ofxAnimatableOfPoint size;
 
 		ofRectangle tileRect;
+
+		list<animation*> animations;
 };

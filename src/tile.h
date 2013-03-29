@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxAnimatableOfPoint.h"
 #include "featureTile.h"
+#include "pointAnimation.h"
 
 //The margin surrounding an individual tile
 #define MARGIN_TILE 5
@@ -35,10 +35,16 @@ class tile {
 		bool clickable;
 		ofPoint finalPosition;
 
-		ofxAnimatableOfPoint position;
-
 		ofRectangle gridRect;
 		ofRectangle tileRect;
 
 		featureTile feature;
+
+		list<animation*> animations;
+
+	private: 
+		int id;
+		string title;
+		string content;
+		//media
 };
