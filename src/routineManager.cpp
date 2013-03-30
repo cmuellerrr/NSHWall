@@ -40,7 +40,7 @@ void routineManager::update() {
 
 	//Switch to the incoming routine if the outgoing one has finished
 	if (incomingRoutine != 0) {
-		if (activeRoutine->getMode() == HIDDEN) {
+		if (activeRoutine->getState() == HIDDEN) {
 			cout<<"Active routine done exiting.\n";
 			switchToIncomingRoutine();
 		}
@@ -102,7 +102,7 @@ void routineManager::addRoutine(routine r){
 
 	if (routines.size() == 1) {
 		activeRoutine = &routines.front();
-		activeRoutine->setMode(ENTER);
+		activeRoutine->setState(ENTER);
 		resetHitTimer();
 	}
 }
@@ -142,8 +142,8 @@ void routineManager::setIncomingRoutine(routine* r) {
 	
 	incomingRoutine = r;
 	//Probably not necessary to set this to HIDDEN
-	incomingRoutine->setMode(HIDDEN);
-	activeRoutine->setMode(EXIT);
+	incomingRoutine->setState(HIDDEN);
+	activeRoutine->setState(EXIT);
 	resetHitTimer();
 }
 
@@ -151,7 +151,7 @@ void routineManager::switchToIncomingRoutine() {
 	std::cout<<"Switching to incoming routine ("<<incomingRoutine->getId()<<").\n";
 
 	activeRoutine = incomingRoutine;
-	activeRoutine->setMode(ENTER);
+	activeRoutine->setState(ENTER);
 	incomingRoutine = 0;
 }
 

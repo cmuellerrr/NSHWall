@@ -13,45 +13,8 @@ class routine {
 		routine(int id);
 		~routine();
 
-        void update() {
-			switch (mode) {
-				case ENTER:
-					updateEnter();
-					break;
-				case ACTIVE:
-					updateActive();
-					break;
-				case EXIT:
-					updateExit();
-					break;
-				case HIDDEN:
-					break;
-			}	
-		}
-
-        void draw() {
-			switch (mode) {
-				case ENTER:
-					drawEnter();
-					break;
-				case ACTIVE:
-					drawActive();
-					break;
-				case EXIT:
-					drawExit();
-					break;
-				case HIDDEN:
-					break;
-			}	
-		}
-
-		void updateEnter();
-		void updateActive();
-		void updateExit();
-
-		void drawEnter();
-		void drawActive();
-		void drawExit();
+		void update();
+		void draw();
 
         bool mouseMoved(int x, int y, int screen);
         bool mouseDragged(int x, int y, int button, int screen);
@@ -59,16 +22,17 @@ class routine {
         bool mouseReleased(int x, int y, int button, int screen);
 
 		int getId() {return id;}
-		void setMode(int newMode);
-		int getMode() {return mode;}
-  
+		int getState() {return state;}
+		void setState(int newState);
+
 		void addGroup(tileGroup g);
 		void removeGroup(tileGroup* g);
 
 	protected:
-		int mode;
+		int state;
 		
 	private:
+		bool isAnimating();
 		void setupEntrance();
 		void setupExit();
 

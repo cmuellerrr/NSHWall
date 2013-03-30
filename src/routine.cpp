@@ -17,7 +17,7 @@
 routine::routine(int i) {
 	std::cout<<"Setting up routine ("<<i<<")."<<'\n';
 	
-	mode = HIDDEN;
+	state = HIDDEN;
 	
 	id = i;
 	name = "";
@@ -30,58 +30,24 @@ routine::~routine() {
 }
 
 /*
- * Update the routine when making its entrance.
- * Handle the state change when the entrance is complete.
+ * Update the routine.  Take care of any state transitions also.
  */
-void routine::updateEnter() {
-	updateActive();
-
-	bool allDone = true;
-
-	for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-		if (it->isAnimating()) allDone = false;
-	}
-
-	if (allDone) setMode(ACTIVE);
-}
-
-/*
- * Update the routine when in its normal, active state.
- */
-void routine::updateActive() {
-	for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-		it->update();
-	}
-}
-
-/*
- * Update the routine when it is exiting the wall.
- * Handle the state change when done.
- */
-void routine::updateExit() {
-	updateActive();
-
-	bool allDone = true;
-
-	for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
-		if (it->isAnimating()) allDone = false;
-	}
-
-	if (allDone) setMode(HIDDEN);
-}
-
-/*
- * Draw the routine when entering the all.
- */
-void routine::drawEnter() {
-	drawActive();
-}
+void routine::update() {
+	if (state != HIDDEN) {
+		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
+			it->update();
+		}
 		
-/*
- * Draw the wall in its normal state.
- */
-void routine::drawActive() {
+		bool animating = isAnimating();
+		if (state == ENTER && !animating) setState(ACTIVE);
+		else if (state == EXIT && !animating) setState(HIDDEN);
+	}
+}
 
+/*
+ * Draw the routine.
+ */
+void routine::draw() {
 	ofPushStyle();
 
     ofSetColor(255, 255, 255);
@@ -94,24 +60,18 @@ void routine::drawActive() {
 	ofPopStyle();
 }
 
-/*
- * Draw the wall when exiting.
- */		
-void routine::drawExit() {
-	drawActive();
-}
 
 /*
  * Handle all input.  Just pass to the tile groups.
  */
 
+
 //TODO: we can find a better way of comparing the group index.
 //Maybe their index within the group list should match?  But what
 //if we go to a 2D set of displays?
-
 bool routine::mouseMoved(int x, int y, int screen)  {
 	bool hit = false;
-	if (mode == ACTIVE) {
+	if (state == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
 			if(it->getIndex() == screen) {
 				if (it->mouseMoved(x, y)) hit = true;
@@ -123,7 +83,7 @@ bool routine::mouseMoved(int x, int y, int screen)  {
 
 bool routine::mouseDragged(int x, int y, int button, int screen) {
 	bool hit = false;
-	if (mode == ACTIVE) {
+	if (state == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
 			if(it->getIndex() == screen) {
 				if (it->mouseDragged(x, y, button)) hit = true;
@@ -135,7 +95,7 @@ bool routine::mouseDragged(int x, int y, int button, int screen) {
         
 bool routine::mousePressed(int x, int y, int button, int screen) {
 	bool hit = false;
-	if (mode == ACTIVE) {
+	if (state == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
 			if(it->getIndex() == screen) {
 				if (it->mousePressed(x, y, button)) hit = true;
@@ -147,7 +107,7 @@ bool routine::mousePressed(int x, int y, int button, int screen) {
         
 bool routine::mouseReleased(int x, int y, int button, int screen) {
 	bool hit = false;
-	if (mode == ACTIVE) {
+	if (state == ACTIVE) {
 		for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
 			if(it->getIndex() == screen) {
 				if (it->mouseReleased(x, y, button)) hit = true;
@@ -161,7 +121,7 @@ bool routine::mouseReleased(int x, int y, int button, int screen) {
  * Set the wall's current mode.  Take care of setting up the 
  * tile groups in accordance with the new mode.
  */
-void routine::setMode(int newMode) {
+void routine::setState(int newMode) {
 	std::cout<<"Setting routine ("<<id<<") mode to "<<newMode<<'\n';
 	switch (newMode) {
 		case ENTER:
@@ -171,7 +131,7 @@ void routine::setMode(int newMode) {
 			setupExit();
 			break;
 	}	
-	mode = newMode;
+	state = newMode;
 }
 
 /*
@@ -209,6 +169,16 @@ tileGroup* routine::getGroupAt(int index) {
     list<tileGroup>::iterator it = groups.begin();
 	advance(it, index);
 	return &*it;
+}
+
+/*
+ * Return weather or not the routine's groups are animating.
+ */
+bool routine::isAnimating() {
+	for (list<tileGroup>::iterator it = groups.begin(); it != groups.end(); it++) {
+		if (it->isAnimating()) return true;
+	}
+	return false;
 }
 
 /*
