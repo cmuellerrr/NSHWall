@@ -38,8 +38,10 @@ tile::~tile() {
 
 /*
  * Update the tile.  We really only care if it is animating.
+ * Update any animations it has, and remove any that are done.
  */
 void tile::update() {
+	//This is a little different because we are removing things while traversing
 	for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
 		if ((*it)->isDone()) {
 			delete *it;
@@ -102,6 +104,8 @@ bool tile::isAnimating() {
 void tile::setupEntrance(int edge) {
 	//Move the tile off screen
 	tileRect.setPosition(getOffscreenPosition(edge));
+
+	//This is getting allocated to the heap so make sure it gets deleted when done.
 	animations.push_front(new pointAnimation(&tileRect.position, finalPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 }
 
@@ -109,6 +113,7 @@ void tile::setupEntrance(int edge) {
  * Set up the tile's exit from the wall.
  */
 void tile::setupExit(int edge) {
+	//This is getting allocated to the heap so make sure it gets deleted when done.
 	animations.push_front(new pointAnimation(&tileRect.position, getOffscreenPosition(edge), 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 }
 

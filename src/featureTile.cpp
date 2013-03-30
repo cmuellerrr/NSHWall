@@ -23,8 +23,10 @@ featureTile::~featureTile() {
 
 /*
  * Update the tile.  We really only care if it is animating.
+ * Update any animations it has, and remove any that are done.
  */
 void featureTile::update() {
+	//This is a little different because we are removing things while traversing
 	for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
 		if ((*it)->isDone()) {
 			delete *it;
@@ -87,6 +89,7 @@ bool featureTile::isAnimating() {
  * Set up the tile's entrance to the wall.
  */
 void featureTile::setupEntrance() {
+	//This is getting allocated to the heap so make sure it gets deleted when done.
 	animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, finalSize, .3, BOUNCY));
 }
 
@@ -94,6 +97,7 @@ void featureTile::setupEntrance() {
  * Set up the tile's exit from the wall.
  */
 void featureTile::setupExit() {
+	//This is getting allocated to the heap so make sure it gets deleted when done.
 	animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, ofPoint(0, 0), .3, BOUNCY));
 }
 
