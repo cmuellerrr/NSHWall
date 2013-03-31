@@ -10,9 +10,20 @@
 /*
  * Setup the tile group within the given bounds.
  */
-tileGroup::tileGroup(ofRectangle bounds, int i) {
-	index = i;
-	boundingBox = bounds;
+tileGroup::tileGroup() {
+	set(0, ofRectangle(0, 0, 0, 0));
+}
+
+tileGroup::tileGroup(int index, ofRectangle boundingBox) {
+	set(index, boundingBox);
+}
+
+/*
+ * Do the actual work for setting up the group.
+ */
+void tileGroup::set(int index, ofRectangle boundingBox) {
+	this->index = index;
+	this->boundingBox = boundingBox;
 
 	focus = 0;
 	

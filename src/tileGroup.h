@@ -12,8 +12,10 @@ class tileGroup {
     public:
 
         tileGroup();
-		tileGroup(ofRectangle bounds, int i);
+		tileGroup(int index, ofRectangle bounds);
 		~tileGroup();
+
+		void set(int index, ofRectangle bounds);
 
 		void update();
 		void draw();

@@ -16,8 +16,8 @@
 //NOTE: Order of function declaration matters here!!!
 namespace routineFactory {
 
-    tileGroup getTestTiles1(ofRectangle bounds, int index) {
-		tileGroup testGroup = tileGroup(bounds, index);
+    tileGroup getTestTiles1(int index, ofRectangle bounds) {
+		tileGroup testGroup = tileGroup(index, bounds);
 			
 		testGroup.addTile(tile(ofRandom(256), "Test", ofRectangle(0, 1, 2, 2)));
 		
@@ -36,8 +36,8 @@ namespace routineFactory {
 		return testGroup;
 	};
 
-	tileGroup getTestTiles2(ofRectangle bounds, int index) {
-		tileGroup testGroup = tileGroup(bounds, index);
+	tileGroup getTestTiles2(int index, ofRectangle bounds) {
+		tileGroup testGroup = tileGroup(index, bounds);
 			
 		testGroup.addTile(tile(ofRandom(256), "Test", ofRectangle(0, 0, 4, .5)));
 		testGroup.addTile(tile(ofRandom(256), "Test", ofRectangle(0, 1, 1, 1)));
@@ -55,8 +55,8 @@ namespace routineFactory {
 		return testGroup;
 	};
 
-	tileGroup getTestTiles3(ofRectangle bounds, int index) {
-		tileGroup testGroup = tileGroup(bounds, index);
+	tileGroup getTestTiles3(int index, ofRectangle bounds) {
+		tileGroup testGroup = tileGroup(index, bounds);
 			
 		testGroup.addTile(tile(ofRandom(256), "Test", ofRectangle(0, 1, 1.5, 2)));
 		testGroup.addTile(tile(ofRandom(256), "Test", ofRectangle(1.5, 1, 2.5, 2)));
@@ -76,13 +76,13 @@ namespace routineFactory {
 		routine testRoutine = routine(id, name);
 		
 		if (SCREENS >= 1) {
-			testRoutine.addGroup(getTestTiles1(ofRectangle(MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 0));
+			testRoutine.addGroup(getTestTiles1(0, ofRectangle(MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
 		
 			if (SCREENS >= 2) {
-				testRoutine.addGroup(getTestTiles2(ofRectangle(wall::SCREEN_W + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 1));
+				testRoutine.addGroup(getTestTiles2(1, ofRectangle(wall::SCREEN_W + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
 			
 				if (SCREENS >= 3) {
-					testRoutine.addGroup(getTestTiles3(ofRectangle((wall::SCREEN_W * 2) + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H), 2));
+					testRoutine.addGroup(getTestTiles3(2, ofRectangle((wall::SCREEN_W * 2) + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
 				}
 			}
 		}
