@@ -11,7 +11,7 @@ class tile {
 
     public:
 
-		tile(float column, float row, float columnSpan, float rowSpan, bool click = true);
+		tile(int id, float column, float row, float columnSpan, float rowSpan, bool clickable = true);
 		~tile();
 
 		void update();
@@ -36,8 +36,10 @@ class tile {
 		void setState(int newState);
 
     protected:
-
+		int state;
+		int id;
 		bool clickable;
+
 		ofPoint offscreenPosition;
 		ofPoint finalPosition;
 
@@ -50,12 +52,6 @@ class tile {
 
 	private:
 
-		void setupEntrance();
-		void setupExit();
-
-		int state;
-
-		int id;
 		string title;
 		string content;
 		//media

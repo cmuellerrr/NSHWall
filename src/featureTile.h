@@ -11,6 +11,7 @@ class featureTile {
     public:
 
 		featureTile();
+		featureTile(int id);
 		~featureTile();
 
         void update();
@@ -26,11 +27,12 @@ class featureTile {
 		void setState(int newState);
 		int getState() {return state;}
 
-    private:
-		void setupEntrance();
-		void setupExit();
-
+	protected:
+		
 		int state;
+		int id;
+
+	private:
 
 		ofPoint finalSize;
 

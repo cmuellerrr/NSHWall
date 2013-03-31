@@ -12,16 +12,14 @@
  * size are determined based off of the static variables created in the wall class.
  * You may also specity if tiles are clickable or not.
  */
-tile::tile(float column, float row, float columnSpan, float rowSpan, bool click) {
-	cout<<"Setting up tile \n";
-
+tile::tile(int id, float column, float row, float columnSpan, float rowSpan, bool clickable) {
 	state = HIDDEN;
 
-	id = 0;
+	this->id = id;
+	this->clickable = clickable;
+
 	title = "";
 	content = "";
-
-	clickable = click;
 	
 	gridRect = ofRectangle(column, row, columnSpan, rowSpan);
 
@@ -33,6 +31,8 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, bool click)
 	offscreenPosition = ofPoint(x, -ofGetWindowHeight());
 	finalPosition = ofPoint(x, y);
 	tileRect = ofRectangle(finalPosition, w, h);
+
+	feature = featureTile(id);
 }
 
 tile::~tile() {
@@ -56,8 +56,8 @@ void tile::update() {
 				++it;
 			}
 		}
-		if (state == ENTER && animations.empty()) state = ACTIVE;
-		if (state == EXIT && animations.empty()) state = HIDDEN;
+		if (state == ENTER && animations.empty()) setState(ACTIVE);
+		if (state == EXIT && animations.empty()) setState(HIDDEN);
 	}
 }
 
@@ -107,34 +107,21 @@ bool tile::isAnimating() {
 	return !animations.empty();
 }
 
+/*
+ * Set the tile's state.
+ * The animation objects are getting allocated to the heap so make sure they get deleted when done.
+ */
 void tile::setState(int newState) {
 	std::cout<<"Setting tile ("<<id<<") state to "<<newState<<'\n';
 	switch (newState) {
 		case ENTER:
-			setupEntrance();
+			//Move the tile off screen
+			tileRect.setPosition(offscreenPosition);
+			animations.push_front(new pointAnimation(&tileRect.position, finalPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 			break;
 		case EXIT:
-			setupExit();
+			animations.push_front(new pointAnimation(&tileRect.position, offscreenPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 			break;
 	}	
 	state = newState;
-}
-
-/*
- * Set up the tile's entrance to the wall.
- */
-void tile::setupEntrance() {
-	//Move the tile off screen
-	tileRect.setPosition(offscreenPosition);
-
-	//This is getting allocated to the heap so make sure it gets deleted when done.
-	animations.push_front(new pointAnimation(&tileRect.position, finalPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
-}
-
-/*
- * Set up the tile's exit from the wall.
- */
-void tile::setupExit() {
-	//This is getting allocated to the heap so make sure it gets deleted when done.
-	animations.push_front(new pointAnimation(&tileRect.position, offscreenPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 }

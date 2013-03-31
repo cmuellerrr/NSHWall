@@ -18,13 +18,13 @@ namespace routineFactory {
     tileGroup getTestTiles1(ofRectangle bounds, int index) {
 		tileGroup testGroup = tileGroup(bounds, index);
 			
-		testGroup.addTile(tile(0, 1, 2, 2));
-		testGroup.addTile(tile(2, 1, 2, 1));
-		testGroup.addTile(tile(2, 2, 1, 1));
-		testGroup.addTile(tile(3, 2, 1, 1));
-		testGroup.addTile(tile(0, 3, 1, 1));
-		testGroup.addTile(tile(1, 3, 3, 2));
-		testGroup.addTile(tile(0, 4, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 1, 2, 2));
+		testGroup.addTile(tile(ofRandom(256), 2, 1, 2, 1));
+		testGroup.addTile(tile(ofRandom(256), 2, 2, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 3, 2, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 3, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 1, 3, 3, 2));
+		testGroup.addTile(tile(ofRandom(256), 0, 4, 1, 1));
 
 		return testGroup;
 	};
@@ -32,18 +32,18 @@ namespace routineFactory {
 	tileGroup getTestTiles2(ofRectangle bounds, int index) {
 		tileGroup testGroup = tileGroup(bounds, index);
 			
-		testGroup.addTile(tile(0, 0, 4, .5));
-		testGroup.addTile(tile(0, 1, 1, 1));
-		testGroup.addTile(tile(1, 1, 1, 1));
-		testGroup.addTile(tile(2, 1, 2, 1));
-		testGroup.addTile(tile(0, 2, 1, 1));
-		testGroup.addTile(tile(1, 2, 2, 2, false));
-		testGroup.addTile(tile(3, 2, 1, 1));
-		testGroup.addTile(tile(0, 3, 1, 1));
-		testGroup.addTile(tile(3, 3, 1, 1));
-		testGroup.addTile(tile(0, 4, 2, 1));
-		testGroup.addTile(tile(2, 4, 2, 1));
-		testGroup.addTile(tile(0, 5.5, 4, .5, false));
+		testGroup.addTile(tile(ofRandom(256), 0, 0, 4, .5));
+		testGroup.addTile(tile(ofRandom(256), 0, 1, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 1, 1, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 2, 1, 2, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 2, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 1, 2, 2, 2, false));
+		testGroup.addTile(tile(ofRandom(256), 3, 2, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 3, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 3, 3, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 4, 2, 1));
+		testGroup.addTile(tile(ofRandom(256), 2, 4, 2, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 5.5, 4, .5, false));
 
 		return testGroup;
 	};
@@ -51,13 +51,13 @@ namespace routineFactory {
 	tileGroup getTestTiles3(ofRectangle bounds, int index) {
 		tileGroup testGroup = tileGroup(bounds, index);
 			
-		testGroup.addTile(tile(0, 1, 1.5, 2));
-		testGroup.addTile(tile(1.5, 1, 2.5, 2));
-		testGroup.addTile(tile(0, 3, 1, 1));
-		testGroup.addTile(tile(1, 3, 1, 1));
-		testGroup.addTile(tile(2, 3, 2, 2));
-		testGroup.addTile(tile(0, 4, 1, 1));
-		testGroup.addTile(tile(1, 4, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 0, 1, 1.5, 2));
+		testGroup.addTile(tile(ofRandom(256), 1.5, 1, 2.5, 2));
+		testGroup.addTile(tile(ofRandom(256), 0, 3, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 1, 3, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 2, 3, 2, 2));
+		testGroup.addTile(tile(ofRandom(256), 0, 4, 1, 1));
+		testGroup.addTile(tile(ofRandom(256), 1, 4, 1, 1));
 
 		return testGroup;
 	};
