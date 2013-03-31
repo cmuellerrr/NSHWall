@@ -12,15 +12,44 @@
  * size are determined based off of the static variables created in the wall class.
  * You may also specity if tiles are clickable or not.
  */
-tile::tile(int id, string title, ofRectangle gridRect, bool clickable) {
-	state = HIDDEN;
+tile::tile() {
+	set(ofRandom(1000), "", "", ofRectangle(0, 0, 0, 0), true);
+}
 
-	this->id = id;
-	this->clickable = clickable;
-
-	this->title = title;
+tile::tile(int id, string title) {
+	set(id, title, "", ofRectangle(0, 0, 0, 0), true);
+}
+		
+tile::tile(int id, string title, string content) {
+	set(id, title, content, ofRectangle(0, 0, 0, 0), true);
+}
+		
+tile::tile(int id, string title, ofRectangle gridRect) {
+	set(id, title, "", gridRect, true);
+}
 	
+tile::tile(int id, string title, ofRectangle gridRect, bool clickable) {
+	set(id, title, "", gridRect, clickable);
+}
+
+tile::tile(int id, string title, string content, ofRectangle gridRect) {
+	set(id, title, content, gridRect, true);
+}
+		
+tile::tile(int id, string title, string content, ofRectangle gridRect, bool clickable) {
+	set(id, title, content, gridRect, clickable);
+}
+
+
+/*
+ * Do the actual work for setting up the tile.
+ */
+void tile::set(int id, string title, string content, ofRectangle gridRect, bool clickable) {
+	state = HIDDEN;
+	this->id = id;
+	this->title = title;
 	this->gridRect = gridRect;
+	this->clickable = clickable;
 
 	int x = (wall::TILE_W * gridRect.x) + MARGIN_TILE;
 	int y = (wall::TILE_H * gridRect.y) + MARGIN_TILE;
@@ -31,7 +60,7 @@ tile::tile(int id, string title, ofRectangle gridRect, bool clickable) {
 	finalPosition = ofPoint(x, y);
 	tileRect = ofRectangle(finalPosition, w, h);
 
-	expanded = expandedTile(id, title);
+	expanded = expandedTile(id, title, content);
 }
 
 tile::~tile() {

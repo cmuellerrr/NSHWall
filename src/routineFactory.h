@@ -105,9 +105,7 @@ namespace routineFactory {
 	 * element.
 	 */
 	tile parseTile(ofxJSONElement json) {
-		tile newTile = tile(json["id"].asInt(), json["title"].asString(), ofRectangle(0, 0, 1, 1));
-
-		newTile.setContent(json["content"].asString());
+		tile newTile = tile(json["id"].asInt(), json["title"].asString(), json["content"].asString());
 		
 		for (int i = 0; i < json["media"].size(); i++) {
 			if (i == 0) newTile.setFeaturedImage(json["media"][i].asString());

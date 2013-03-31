@@ -12,7 +12,10 @@ class expandedTile {
 
 		expandedTile();
 		expandedTile(int id, string title);
+		expandedTile(int id, string title, string content);
 		~expandedTile();
+
+		void set(int id, string title, string content);
 
         void update();
 		void draw();

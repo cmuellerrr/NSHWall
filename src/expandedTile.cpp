@@ -1,17 +1,33 @@
 #include "wall.h"
 #include "expandedTile.h"
 
-expandedTile::expandedTile() {
-}
-
 /*
  * Create an expaned version of a normal tile.
  */
+expandedTile::expandedTile() {
+	set(ofRandom(1000), "", "");
+}
+
 expandedTile::expandedTile(int id, string title) {
+	set(id, title, "");
+}
+
+expandedTile::expandedTile(int id, string title, string content) {
+	set(id, title, content);
+}
+
+expandedTile::~expandedTile() {
+	
+}
+
+/*
+ * Do the actual work for creating the expanded tile.
+ */
+void expandedTile::set(int id, string title, string content) {
 	state = HIDDEN;
 	this->id = id;
 	this->title = title;
-	content = "";
+	this->content = content;
 
 	int x = (wall::TILE_W / 2) + MARGIN_TILE;
 	int y = (wall::TILE_H * 0.75) + MARGIN_TILE;
@@ -21,11 +37,6 @@ expandedTile::expandedTile(int id, string title) {
 	finalSize = ofPoint(w, h);
 	tileRect = ofRectangle(x, y, 0, 0);
 }
-
-expandedTile::~expandedTile() {
-	
-}
-
 
 /*
  * Update the tile.  We really only care if it is animating.

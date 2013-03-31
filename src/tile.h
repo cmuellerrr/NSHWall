@@ -11,9 +11,16 @@ class tile {
 
     public:
 
-		tile(int id, string title, ofRectangle gridRect, bool clickable = true);
-		
+		tile();
+		tile(int id, string title);
+		tile(int id, string title, string content);
+		tile(int id, string title, ofRectangle gridRect);
+		tile(int id, string title, ofRectangle gridRect, bool clickable);
+		tile(int id, string title, string content, ofRectangle gridRect);
+		tile(int id, string title, string content, ofRectangle gridRect, bool clickable);
 		~tile();
+
+		void set(int id, string title, string content, ofRectangle gridRect, bool clickable);
 
 		void update();
 		void draw();
