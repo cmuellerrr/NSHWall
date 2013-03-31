@@ -28,6 +28,7 @@ tile::tile(float column, float row, float columnSpan, float rowSpan, bool click)
 	int w = (wall::TILE_W * columnSpan) - (MARGIN_TILE * 2);
 	int h = (wall::TILE_H * rowSpan) - (MARGIN_TILE * 2);
 
+	offscreenPosition = ofPoint(x, -ofGetWindowHeight());
 	finalPosition = ofPoint(x, y);
 	tileRect = ofRectangle(finalPosition, w, h);
 }
@@ -101,9 +102,9 @@ bool tile::isAnimating() {
 /*
  * Set up the tile's entrance to the wall.
  */
-void tile::setupEntrance(int edge) {
+void tile::setupEntrance() {
 	//Move the tile off screen
-	tileRect.setPosition(getOffscreenPosition(edge));
+	tileRect.setPosition(offscreenPosition);
 
 	//This is getting allocated to the heap so make sure it gets deleted when done.
 	animations.push_front(new pointAnimation(&tileRect.position, finalPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
@@ -112,35 +113,7 @@ void tile::setupEntrance(int edge) {
 /*
  * Set up the tile's exit from the wall.
  */
-void tile::setupExit(int edge) {
+void tile::setupExit() {
 	//This is getting allocated to the heap so make sure it gets deleted when done.
-	animations.push_front(new pointAnimation(&tileRect.position, getOffscreenPosition(edge), 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
-}
-
-/*
- * Get a point representing some offscreen position for the given edge.
- * So, if edge is the left edge, it will return a point guaranteed to 
- * be offscreen and to the left of the wall.
- */
-ofPoint tile::getOffscreenPosition(int edge) {
-	ofPoint p = ofPoint(finalPosition);
-
-	switch (edge) {
-		case EDGE_LEFT:
-				p.x = -ofGetWindowWidth() * SCREENS;
-			break;
-		case EDGE_TOP:
-				p.y = -ofGetWindowHeight();
-			break;
-		case EDGE_RIGHT:
-				p.x = ofGetWindowWidth() * SCREENS;
-			break;
-		case EDGE_BOTTOM:
-				p.y = ofGetWindowHeight() * 2;
-			break;
-		default:
-			break;
-	}
-
-	return p;
+	animations.push_front(new pointAnimation(&tileRect.position, offscreenPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 }

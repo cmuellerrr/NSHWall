@@ -24,15 +24,21 @@ class tile {
 
 		bool isAnimating();
 
-		void setupEntrance(int edge);
-		void setupExit(int edge);
+		void setupEntrance();
+		void setupExit();
 
+		void setOffscreenPosition(ofPoint p) {offscreenPosition = p;}
+		ofPoint getFinalPosition() {return finalPosition;}
+		void setFinalPosition(ofPoint p) {finalPosition = p;}
+
+		ofRectangle getGridRect() {return gridRect;}
+		ofRectangle getTileRect() {return tileRect;}
 		featureTile* getFeature() {return &feature;}
 
     protected:
-		ofPoint getOffscreenPosition(int edge);
 
 		bool clickable;
+		ofPoint offscreenPosition;
 		ofPoint finalPosition;
 
 		ofRectangle gridRect;

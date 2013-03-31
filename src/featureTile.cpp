@@ -37,7 +37,7 @@ void featureTile::update() {
 			++it;
 		}
 	}
-	if (mode == EXIT && animations.empty()) mode = HIDDEN;\
+	if (mode == EXIT && animations.empty()) mode = HIDDEN;
 }
 
 /*

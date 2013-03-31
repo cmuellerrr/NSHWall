@@ -34,7 +34,7 @@ class tileGroup {
 		int getIndex() {return index;}
 
     private:
-		int randomScreenEdge();
+		ofPoint getClosestOffscreenPosition(tile t);
 
 		int getTileIndex(tile* t);
 		tile* getTileAt(int index);

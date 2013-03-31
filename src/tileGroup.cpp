@@ -120,6 +120,7 @@ bool tileGroup::mouseReleased(int x, int y, int button) {
  * Add a tile to the group.
  */
 void tileGroup::addTile(tile t) {
+	t.setOffscreenPosition(getClosestOffscreenPosition(t));
 	tiles.push_back(t);
 }
 
@@ -175,7 +176,7 @@ bool tileGroup::isAnimating() {
  */
 void tileGroup::setupEntrance() {
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->setupEntrance(randomScreenEdge());
+		it->setupEntrance();
 	}
 }
 
@@ -188,30 +189,69 @@ void tileGroup::setupExit() {
 	if (focus != 0) focus->setMode(EXIT);
 
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->setupExit(randomScreenEdge());
+		it->setupExit();
 	}
 }
 
 /*
- * Determine a random edge of the wall.  This is based on the relative 
+ * Determine the closest edge of the wall.  This is based on the relative 
  * position of the tile group - so the far left group can only deal with
  * the left, top, and bottom edges of the screen, etc.
  *
  * Default to the top of the screen.
  */
-int tileGroup::randomScreenEdge() {
+ofPoint tileGroup::getClosestOffscreenPosition(tile t) {
 	int edge = EDGE_TOP;
 	
-	//Because of the way the enumeration was setup
-	//we can just generate a random number between the
-	//values.
+	ofRectangle grid = t.getGridRect();
+	int col = grid.getX();
+	int row = grid.getY();
+
+	//Leftmost screen
 	if (index == 0) {
-		edge = (int)ofRandom(EDGE_LEFT, EDGE_BOTTOM+1);
+		if (col == 0 || col == 1 && (row == 2 || row == 3)) {
+			edge = EDGE_LEFT;
+		} else if (row < ROWS/2) {
+			edge = EDGE_TOP;
+		} else {
+			edge = EDGE_BOTTOM;
+		}
+	//Rightmost screen
 	} else if (index == SCREENS-1) {
-		edge = (int)ofRandom(EDGE_TOP, EDGE_RIGHT+1);
+		if (col == COLUMNS-1 || col == COLUMNS-2 && (row == 2 || row == 3)) {
+			edge = EDGE_RIGHT;
+		} else if (row < ROWS/2) {
+			edge = EDGE_TOP;
+		} else {
+			edge = EDGE_BOTTOM;
+		}
+	//Middle screens
 	} else {
-		edge = (int)ofRandom(EDGE_TOP, EDGE_BOTTOM+1);
+		if (row < ROWS/2) {
+			edge = EDGE_TOP;
+		} else {
+			edge = EDGE_BOTTOM;
+		}
 	}
 
-	return edge;
+	ofPoint p = ofPoint(t.getFinalPosition());
+
+	switch (edge) {
+		case EDGE_LEFT:
+				p.x = -ofGetWindowWidth() * SCREENS;
+			break;
+		case EDGE_TOP:
+				p.y = -ofGetWindowHeight();
+			break;
+		case EDGE_RIGHT:
+				p.x = ofGetWindowWidth() * SCREENS;
+			break;
+		case EDGE_BOTTOM:
+				p.y = ofGetWindowHeight() * 2;
+			break;
+		default:
+			break;
+	}
+
+	return p;
 }

@@ -121,9 +121,9 @@ bool routine::mouseReleased(int x, int y, int button, int screen) {
  * Set the wall's current mode.  Take care of setting up the 
  * tile groups in accordance with the new mode.
  */
-void routine::setState(int newMode) {
-	std::cout<<"Setting routine ("<<id<<") mode to "<<newMode<<'\n';
-	switch (newMode) {
+void routine::setState(int newState) {
+	std::cout<<"Setting routine ("<<id<<") mode to "<<newState<<'\n';
+	switch (newState) {
 		case ENTER:
 			setupEntrance();
 			break;
@@ -131,7 +131,7 @@ void routine::setState(int newMode) {
 			setupExit();
 			break;
 	}	
-	state = newMode;
+	state = newState;
 }
 
 /*
