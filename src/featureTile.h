@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "routine.h"
 #include "dimensionAnimation.h"
 
 //The margin surrounding a feature story
@@ -24,14 +23,14 @@ class featureTile {
 
 		bool isAnimating();
 
+		void setState(int newState);
+		int getState() {return state;}
+
+    private:
 		void setupEntrance();
 		void setupExit();
 
-		void setMode(int newMode);
-		int getMode() {return mode;}
-
-    private:
-		int mode;
+		int state;
 
 		ofPoint finalSize;
 

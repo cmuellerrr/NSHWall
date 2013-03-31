@@ -22,10 +22,7 @@ class tile {
         bool mousePressed(int x, int y, int button);
         bool mouseReleased(int x, int y, int button);
 
-		bool isAnimating();
-
-		void setupEntrance();
-		void setupExit();
+		bool isAnimating();		
 
 		void setOffscreenPosition(ofPoint p) {offscreenPosition = p;}
 		ofPoint getFinalPosition() {return finalPosition;}
@@ -34,6 +31,9 @@ class tile {
 		ofRectangle getGridRect() {return gridRect;}
 		ofRectangle getTileRect() {return tileRect;}
 		featureTile* getFeature() {return &feature;}
+
+		int getState() {return state;}
+		void setState(int newState);
 
     protected:
 
@@ -48,7 +48,13 @@ class tile {
 
 		list<animation*> animations;
 
-	private: 
+	private:
+
+		void setupEntrance();
+		void setupExit();
+
+		int state;
+
 		int id;
 		string title;
 		string content;

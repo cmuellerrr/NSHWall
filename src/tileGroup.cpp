@@ -34,7 +34,7 @@ void tileGroup::update() {
 
 	if (focus != 0) {
 		focus->update();
-		if (focus->getMode() == HIDDEN) {
+		if (focus->getState() == HIDDEN) {
 			focus = 0;
 		}
 	}
@@ -176,7 +176,7 @@ bool tileGroup::isAnimating() {
  */
 void tileGroup::setupEntrance() {
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->setupEntrance();
+		it->setState(ENTER);
 	}
 }
 
@@ -186,10 +186,10 @@ void tileGroup::setupEntrance() {
  * gets set to disappear.
  */
 void tileGroup::setupExit() {
-	if (focus != 0) focus->setMode(EXIT);
+	if (focus != 0) focus->setState(EXIT);
 
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->setupExit();
+		it->setState(EXIT);
 	}
 }
 

@@ -15,6 +15,8 @@
 tile::tile(float column, float row, float columnSpan, float rowSpan, bool click) {
 	cout<<"Setting up tile \n";
 
+	state = HIDDEN;
+
 	id = 0;
 	title = "";
 	content = "";
@@ -42,16 +44,20 @@ tile::~tile() {
  * Update any animations it has, and remove any that are done.
  */
 void tile::update() {
-	//This is a little different because we are removing things while traversing
-	for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
-		if ((*it)->isDone()) {
-			delete *it;
-			it = animations.erase(it);
+	if (state != HIDDEN) {
+		//This is a little different because we are removing things while traversing
+		for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
+			if ((*it)->isDone()) {
+				delete *it;
+				it = animations.erase(it);
+			}
+			else {
+				(*it)->update();
+				++it;
+			}
 		}
-		else {
-			(*it)->update();
-			++it;
-		}
+		if (state == ENTER && animations.empty()) state = ACTIVE;
+		if (state == EXIT && animations.empty()) state = HIDDEN;
 	}
 }
 
@@ -59,12 +65,14 @@ void tile::update() {
  * Draw the tile.
  */
 void tile::draw() {
-	ofPushStyle();
+	if (state != HIDDEN) {
+		ofPushStyle();
 
-	ofFill();
-	ofRect(tileRect);
+		ofFill();
+		ofRect(tileRect);
 
-	ofPopStyle();
+		ofPopStyle();
+	}
 }
 
 /*
@@ -82,7 +90,7 @@ bool tile::mouseDragged(int x, int y, int button) {
 bool tile::mousePressed(int x, int y, int button) {
 	if (clickable && tileRect.inside(x, y)) {
 		cout<<"HIT at "<<x<<" "<<y<<"\n";
-		feature.setMode(ENTER);
+		feature.setState(ENTER);
 		return true;
 	}
 	return false;
@@ -97,6 +105,19 @@ bool tile::mouseReleased(int x, int y, int button) {
  */
 bool tile::isAnimating() {
 	return !animations.empty();
+}
+
+void tile::setState(int newState) {
+	std::cout<<"Setting tile ("<<id<<") state to "<<newState<<'\n';
+	switch (newState) {
+		case ENTER:
+			setupEntrance();
+			break;
+		case EXIT:
+			setupExit();
+			break;
+	}	
+	state = newState;
 }
 
 /*

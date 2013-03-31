@@ -5,7 +5,7 @@
  *
  */
 featureTile::featureTile() {
-	mode = HIDDEN;
+	state = HIDDEN;
 
 	int x = (wall::TILE_W / 2) + MARGIN_TILE;
 	int y = (wall::TILE_H * 0.75) + MARGIN_TILE;
@@ -26,31 +26,36 @@ featureTile::~featureTile() {
  * Update any animations it has, and remove any that are done.
  */
 void featureTile::update() {
-	//This is a little different because we are removing things while traversing
-	for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
-		if ((*it)->isDone()) {
-			delete *it;
-			it = animations.erase(it);
+	if (state != HIDDEN) {
+		//This is a little different because we are removing things while traversing
+		for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
+			if ((*it)->isDone()) {
+				delete *it;
+				it = animations.erase(it);
+			}
+			else {
+				(*it)->update();
+				++it;
+			}
 		}
-		else {
-			(*it)->update();
-			++it;
-		}
+		if (state == ENTER && animations.empty()) state = ACTIVE;
+		if (state == EXIT && animations.empty()) state = HIDDEN;
 	}
-	if (mode == EXIT && animations.empty()) mode = HIDDEN;
 }
 
 /*
  * Draw the tile.
  */
 void featureTile::draw() {
-	ofPushStyle();
+	if (state != HIDDEN) {
+		ofPushStyle();
 	
-	ofSetColor(ofColor(128, 128, 128));
-	ofFill();
-	ofRect(tileRect);
+		ofSetColor(ofColor(128, 128, 128));
+		ofFill();
+		ofRect(tileRect);
 
-	ofPopStyle();
+		ofPopStyle();
+	}
 }
 
 /*
@@ -68,7 +73,7 @@ bool featureTile::mouseDragged(int x, int y, int button) {
 bool featureTile::mousePressed(int x, int y, int button) {
 	if (tileRect.inside(x, y)) {
 		cout<<"HIT at "<<x<<" "<<y<<"\n";
-		setMode(EXIT);
+		setState(EXIT);
 	}
 	return false;
 }
@@ -101,15 +106,15 @@ void featureTile::setupExit() {
 	animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, ofPoint(0, 0), .3, BOUNCY));
 }
 
-void featureTile::setMode(int newMode) {
-	std::cout<<"Setting feature mode to "<<newMode<<'\n';
-	mode = newMode;
-	switch (mode) {
+void featureTile::setState(int newState) {
+	std::cout<<"Setting feature state to "<<newState<<'\n';
+	switch (newState) {
 		case ENTER:
 			setupEntrance();
 			break;
 		case EXIT:
 			setupExit();
 			break;
-	}	
+	}
+	state = newState;	
 }

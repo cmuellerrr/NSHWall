@@ -122,7 +122,7 @@ bool routine::mouseReleased(int x, int y, int button, int screen) {
  * tile groups in accordance with the new mode.
  */
 void routine::setState(int newState) {
-	std::cout<<"Setting routine ("<<id<<") mode to "<<newState<<'\n';
+	std::cout<<"Setting routine ("<<id<<") state to "<<newState<<'\n';
 	switch (newState) {
 		case ENTER:
 			setupEntrance();
