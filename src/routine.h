@@ -10,7 +10,7 @@ class routine {
 
     public:
 
-		routine(int id);
+		routine(int id, string name);
 		~routine();
 
 		void update();

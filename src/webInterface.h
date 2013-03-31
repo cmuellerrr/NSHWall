@@ -10,17 +10,19 @@
 
 namespace webInterface {
 
-    string getActiveRoutines() {
+    ofxJSONElement getActiveRoutines() {
         cout<<"Getting active routines.\n";
         ofxJSONElement json;
 		bool success = json.open("http://robowall.hcii.cs.cmu.edu/?wpapi=get_posts&type=post&dev=1");
 
-		if (success) {
-			return json.getRawString();
-		} else {
-			cout<<"Failed to get active routines.\n";
-			return "";
+		if (!success) {
+			cout<<"Failed to get active routines.\n";\
 		}
-    }
+		return json;
+    };
 
-}
+	
+	string getActiveRoutinesString() {
+		return getActiveRoutines().getRawString();
+    };
+};

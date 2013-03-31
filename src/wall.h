@@ -43,4 +43,6 @@ class wall : public ofxFensterListener {
 		ofxFensterCanvas canvas;
 
 		routineManager manager;
+
+		ofImage test;
 };

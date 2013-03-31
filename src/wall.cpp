@@ -43,11 +43,15 @@ void wall::setup(){
 	TILE_H = GROUP_H / ROWS;
 
 	//Get some test routines
-	manager.addRoutine(routineFactory::getTestRoutine(111));
-	manager.addRoutine(routineFactory::getTestRoutine(222));
-	manager.addRoutine(routineFactory::getTestRoutine(333));
+	manager.addRoutine(routineFactory::getTestRoutine(111, "Test routine 1"));
+	manager.addRoutine(routineFactory::getTestRoutine(222, "Test routine 2"));
+	manager.addRoutine(routineFactory::getTestRoutine(333, "Test routine 3"));
 
-	cout<<webInterface::getActiveRoutines();
+	cout<<webInterface::getActiveRoutinesString()<<"\n";
+
+	//ofxFensterManager::get()->getPrimaryWindow()->setActive();
+	//test.loadImage("layouts/chris.jpg");
+	//test.update();
 }
 
 /*
@@ -62,8 +66,9 @@ void wall::update(){
  * the fenster windows before drawing the application.
  */
 void wall::draw(){
+	
 	canvas.setupPerspectiveForActiveScreen();
-
+	//test.draw(100, 100);
 	ofPushStyle();
     {
 		manager.draw();

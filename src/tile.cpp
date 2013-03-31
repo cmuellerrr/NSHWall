@@ -12,27 +12,26 @@
  * size are determined based off of the static variables created in the wall class.
  * You may also specity if tiles are clickable or not.
  */
-tile::tile(int id, float column, float row, float columnSpan, float rowSpan, bool clickable) {
+tile::tile(int id, string title, ofRectangle gridRect, bool clickable) {
 	state = HIDDEN;
 
 	this->id = id;
 	this->clickable = clickable;
 
-	title = "";
-	content = "";
+	this->title = title;
 	
-	gridRect = ofRectangle(column, row, columnSpan, rowSpan);
+	this->gridRect = gridRect;
 
-	int x = (wall::TILE_W * column) + MARGIN_TILE;
-	int y = (wall::TILE_H * row) + MARGIN_TILE;
-	int w = (wall::TILE_W * columnSpan) - (MARGIN_TILE * 2);
-	int h = (wall::TILE_H * rowSpan) - (MARGIN_TILE * 2);
+	int x = (wall::TILE_W * gridRect.x) + MARGIN_TILE;
+	int y = (wall::TILE_H * gridRect.y) + MARGIN_TILE;
+	int w = (wall::TILE_W * gridRect.width) - (MARGIN_TILE * 2);
+	int h = (wall::TILE_H * gridRect.height) - (MARGIN_TILE * 2);
 
 	offscreenPosition = ofPoint(x, -ofGetWindowHeight());
 	finalPosition = ofPoint(x, y);
 	tileRect = ofRectangle(finalPosition, w, h);
 
-	feature = featureTile(id);
+	expanded = expandedTile(id, title);
 }
 
 tile::~tile() {
@@ -68,8 +67,12 @@ void tile::draw() {
 	if (state != HIDDEN) {
 		ofPushStyle();
 
-		ofFill();
-		ofRect(tileRect);
+		if (featuredImg.isAllocated()) {
+			featuredImg.draw(tileRect);
+		} else {
+			ofFill();
+			ofRect(tileRect);
+		}
 
 		ofPopStyle();
 	}
@@ -90,7 +93,7 @@ bool tile::mouseDragged(int x, int y, int button) {
 bool tile::mousePressed(int x, int y, int button) {
 	if (clickable && tileRect.inside(x, y)) {
 		cout<<"HIT at "<<x<<" "<<y<<"\n";
-		feature.setState(ENTER);
+		expanded.setState(ENTER);
 		return true;
 	}
 	return false;
@@ -124,4 +127,36 @@ void tile::setState(int newState) {
 			break;
 	}	
 	state = newState;
+}
+
+void tile::setContent(string content) {
+	expanded.setContent(content);
+}
+
+void tile::setFeaturedImage(string url) {
+	ofImage img;
+
+	if (img.loadImage(url)) {
+		setFeaturedImage(img);
+	} else {
+		cout<<"FAILED TO LOAD IMAGE: "<<url<<"\n";
+	}
+}
+
+void tile::setFeaturedImage(ofImage img) {
+	featuredImg = img;
+	addImage(img);
+}
+
+void tile::addImage(string url) {
+	ofImage img;
+	if (img.loadImage(url)) {
+		expanded.addImage(img);
+	} else {
+		cout<<"FAILED TO LOAD IMAGE: "<<url<<"\n";
+	}
+}
+
+void tile::addImage(ofImage img) {
+	expanded.addImage(img);
 }

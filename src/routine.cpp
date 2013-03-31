@@ -14,13 +14,13 @@
 /*
  * Default constructor.
  */
-routine::routine(int i) {
-	std::cout<<"Setting up routine ("<<i<<")."<<'\n';
+routine::routine(int id, string name) {
+	std::cout<<"Setting up routine ("<<id<<")."<<'\n';
 	
 	state = HIDDEN;
 	
-	id = i;
-	name = "";
+	this->id = id;
+	this->name = name;
 	start = 0;
 	end = 0;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "featureTile.h"
+#include "expandedTile.h"
 #include "pointAnimation.h"
 
 //The margin surrounding an individual tile
@@ -11,7 +11,8 @@ class tile {
 
     public:
 
-		tile(int id, float column, float row, float columnSpan, float rowSpan, bool clickable = true);
+		tile(int id, string title, ofRectangle gridRect, bool clickable = true);
+		
 		~tile();
 
 		void update();
@@ -28,14 +29,21 @@ class tile {
 		ofPoint getFinalPosition() {return finalPosition;}
 		void setFinalPosition(ofPoint p) {finalPosition = p;}
 
-		ofRectangle getGridRect() {return gridRect;}
-		ofRectangle getTileRect() {return tileRect;}
-		featureTile* getFeature() {return &feature;}
-
 		int getState() {return state;}
 		void setState(int newState);
 
+		ofRectangle getGridRect() {return gridRect;}
+		ofRectangle getTileRect() {return tileRect;}
+		expandedTile* getExpanded() {return &expanded;}
+
+		void setContent(string content);
+		void setFeaturedImage(string url);
+		void setFeaturedImage(ofImage img);
+		void addImage(string url);
+		void addImage(ofImage img);
+
     protected:
+
 		int state;
 		int id;
 		bool clickable;
@@ -46,13 +54,12 @@ class tile {
 		ofRectangle gridRect;
 		ofRectangle tileRect;
 
-		featureTile feature;
-
 		list<animation*> animations;
 
 	private:
 
 		string title;
-		string content;
-		//media
+		ofImage featuredImg;
+		
+		expandedTile expanded;
 };

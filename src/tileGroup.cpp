@@ -95,7 +95,7 @@ bool tileGroup::mousePressed(int x, int y, int button) {
 		for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 			if (it->mousePressed(x, y, button)) {
 				hit = true;
-				focus = it->getFeature();
+				focus = it->getExpanded();
 			}
 		}
 	} else {
