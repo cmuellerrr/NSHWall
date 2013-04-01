@@ -81,6 +81,9 @@ void wall::draw(){
  * actually has some kind of logic and doesn't just route to another class.
  */
 void wall::keyPressed(int key, ofxFenster* f){
+    if (key == 'f') {
+        cout << "[CURRENT FRAMERATE] " << ofGetFrameRate() << "\n";
+    }
 	manager.keyPressed(key, getWindowIndex(f));
 }
 
