@@ -13,6 +13,7 @@
 #include "routine.h"
 #include "wall.h"
 #include "gridTile.h"
+#include "twitterTile.h"
 
 //NOTE: Order of function declaration matters here!!!
 namespace routineFactory {
@@ -51,8 +52,8 @@ namespace routineFactory {
 		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(3, 3, 1, 1)));
 		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 2, 1)));
 		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(2, 4, 2, 1)));
-		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 5.5, 4, .5), false));
-
+		//testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 5.5, 4, .5), false));
+		testGroup.addTile(new twitterTile("YOLO"));
 		return testGroup;
 	};
 

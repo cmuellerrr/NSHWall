@@ -8,7 +8,6 @@
 
 #include "wall.h"
 #include "routineFactory.h"
-#include "webInterface.h"
 
 //Need to define the static variables in global scope.
 float wall::SCREEN_W;
@@ -43,11 +42,9 @@ void wall::setup(){
 	TILE_H = GROUP_H / ROWS;
 
 	//Get some test routines
-	for (int i = 1; i < 40; i++) {
+	for (int i = 1; i < 4; i++) {
 		manager.addRoutine(routineFactory::getTestRoutine(i, "Test routine " + i));
 	}
-
-	cout<<webInterface::getActiveRoutinesString()<<"\n";
 
 	//ofxFensterManager::get()->getPrimaryWindow()->setActive();
 	//test.loadImage("layouts/chris.jpg");
