@@ -43,9 +43,9 @@ void wall::setup(){
 	TILE_H = GROUP_H / ROWS;
 
 	//Get some test routines
-	manager.addRoutine(routineFactory::getTestRoutine(111, "Test routine 1"));
-	manager.addRoutine(routineFactory::getTestRoutine(222, "Test routine 2"));
-	manager.addRoutine(routineFactory::getTestRoutine(333, "Test routine 3"));
+	for (int i = 1; i < 40; i++) {
+		manager.addRoutine(routineFactory::getTestRoutine(i, "Test routine " + i));
+	}
 
 	cout<<webInterface::getActiveRoutinesString()<<"\n";
 

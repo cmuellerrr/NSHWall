@@ -1,7 +1,7 @@
 /*
- * A class representing tiles in their simplest form.  They hold the basic information
- * that is presented by the wall.  This class was written to be subclassed to tailor
- * tile behavior to the type of information being presented.
+ * A class representing tiles shown on the grid.  They hold the basic information
+ * that is presented by the wall such as title and featured image.  They 
+ * also have an expanded version of themselves.
  */
 
 #include "wall.h"
@@ -54,38 +54,11 @@ void gridTile::set(int id, string title, string content, ofRectangle gridRect, b
 	this->gridRect = gridRect;
 	this->clickable = clickable;
 
-	int x = (wall::TILE_W * gridRect.x) + MARGIN_TILE;
-	int y = (wall::TILE_H * gridRect.y) + MARGIN_TILE;
-	int w = (wall::TILE_W * gridRect.width) - (MARGIN_TILE * 2);
-	int h = (wall::TILE_H * gridRect.height) - (MARGIN_TILE * 2);
-
-	offscreenPosition = ofPoint(x, -ofGetWindowHeight());
-	finalPosition = ofPoint(x, y);
-	tileRect = ofRectangle(finalPosition, w, h);
-
+	setupTileRect();
+	defaultPosition = ofPoint(tileRect.x, tileRect.y);
+	offscreenPosition = ofPoint(tileRect.x, -ofGetWindowHeight());
+	
 	expanded = expandedTile(id, title, content);
-}
-
-/*
- * Update the tile.  We really only care if it is animating.
- * Update any animations it has, and remove any that are done.
- */
-void gridTile::update() {
-	if (state != HIDDEN) {
-		//This is a little different because we are removing things while traversing
-		for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
-			if ((*it)->isDone()) {
-				delete *it;
-				it = animations.erase(it);
-			}
-			else {
-				(*it)->update();
-				++it;
-			}
-		}
-		if (state == ENTER && animations.empty()) setState(ACTIVE);
-		if (state == EXIT && animations.empty()) setState(HIDDEN);
-	}
 }
 
 /*
@@ -110,32 +83,21 @@ void gridTile::draw() {
  * Handle all input.  Return if something happened.
  */
 
-bool gridTile::mouseMoved(int x, int y)  {
-	return false;
-}
-
-bool gridTile::mouseDragged(int x, int y, int button) {
-	return false;
-}
-        
 bool gridTile::mousePressed(int x, int y, int button) {
 	if (clickable && tileRect.inside(x, y)) {
-		cout<<"HIT at "<<x<<" "<<y<<"\n";
 		expanded.setState(ENTER);
 		return true;
 	}
 	return false;
 }
-        
-bool gridTile::mouseReleased(int x, int y, int button) {
-	return false;
-}
 
 /*
- * Return if the tile is, or will be, animating.
+ * Check for any state transitions based on the tile's
+ * current state.  If found, update the tile's current state.
  */
-bool gridTile::isAnimating() {
-	return !animations.empty();
+void gridTile::checkStateTransition() {
+	if (state == ENTER && animations.empty()) setState(ACTIVE);
+	if (state == EXIT && animations.empty()) setState(HIDDEN);
 }
 
 /*
@@ -148,7 +110,7 @@ void gridTile::setState(int newState) {
 		case ENTER:
 			//Move the tile off screen
 			tileRect.setPosition(offscreenPosition);
-			animations.push_front(new pointAnimation(&tileRect.position, finalPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
+			animations.push_front(new pointAnimation(&tileRect.position, defaultPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
 			break;
 		case EXIT:
 			animations.push_front(new pointAnimation(&tileRect.position, offscreenPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
@@ -157,10 +119,17 @@ void gridTile::setState(int newState) {
 	state = newState;
 }
 
+/*
+ * Set the tile's expandedTile content.
+ */
 void gridTile::setContent(string content) {
 	expanded.setContent(content);
 }
 
+/*
+ * Set the tile's featured image.  This image
+ * then gets pushed to the expanded tile.
+ */
 void gridTile::setFeaturedImage(string url) {
 	ofImage img;
 
@@ -171,11 +140,18 @@ void gridTile::setFeaturedImage(string url) {
 	}
 }
 
+/*
+ * Set the tile's featured image.  This image
+ * then gets pushed to the expanded tile.
+ */
 void gridTile::setFeaturedImage(ofImage img) {
 	featuredImg = img;
 	addImage(img);
 }
 
+/*
+ * Add the given image to the expanded tile.
+ */
 void gridTile::addImage(string url) {
 	ofImage img;
 	if (img.loadImage(url)) {
@@ -185,6 +161,9 @@ void gridTile::addImage(string url) {
 	}
 }
 
+/*
+ * Add the given image to the expanded tile.
+ */
 void gridTile::addImage(ofImage img) {
 	expanded.addImage(img);
 }

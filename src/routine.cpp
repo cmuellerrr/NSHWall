@@ -138,7 +138,9 @@ void routine::setState(int newState) {
  * Add a tile group to the routine.
  */
 void routine::addGroup(tileGroup g) {
+	cout<<"Adding group "<<g.getIndex()<<"\n";
 	groups.push_back(g);
+	cout<<"Group added\n";
 }
 
 void routine::removeGroup(tileGroup* g) {

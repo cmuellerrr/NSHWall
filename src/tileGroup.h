@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "gridTile.h"
-#include "expandedTile.h"
+#include "tile.h"
 
 //The margin surrounding a tile group.
 #define MARGIN_GROUP 10
@@ -15,8 +14,6 @@ class tileGroup {
 		tileGroup(int index, ofRectangle bounds);
 		~tileGroup();
 
-		void set(int index, ofRectangle bounds);
-
 		void update();
 		void draw();
         
@@ -28,25 +25,28 @@ class tileGroup {
 		void setupEntrance();
 		void setupExit();
 
-		void addTile(gridTile t);
-		void removeTile(gridTile* t);
+		void addTile(tile* t);
+		void removeTile(tile* t);
 
 		bool isAnimating();
 
 		int getIndex() {return index;}
 
     private:
-		ofPoint getClosestOffscreenPosition(gridTile t);
 
-		int getTileIndex(gridTile* t);
-		gridTile* getTileAt(int index);
+		void set(int index, ofRectangle bounds);
+
+		ofPoint getClosestOffscreenPosition(tile* t);
+
+		int getTileIndex(tile* t);
+		tile* getTileAt(int index);
 
 		int index;
 
 		ofRectangle boundingBox;
 
-	    list<gridTile> tiles;
-		expandedTile* focus;
+	    list<tile*> tiles;
+		tile* focus;
 
 		ofColor tileColor;
 };

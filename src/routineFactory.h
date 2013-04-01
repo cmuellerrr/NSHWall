@@ -12,6 +12,7 @@
 #include "ofxJSONElement.h"
 #include "routine.h"
 #include "wall.h"
+#include "gridTile.h"
 
 //NOTE: Order of function declaration matters here!!!
 namespace routineFactory {
@@ -19,38 +20,38 @@ namespace routineFactory {
     tileGroup getTestTiles1(int index, ofRectangle bounds) {
 		tileGroup testGroup = tileGroup(index, bounds);
 			
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 1, 2, 2)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 1, 2, 2)));
 		
 		//gridTile t2 = gridTile(ofRandom(256), "Test", ofRectangle(2, 1, 2, 1));
 		//t2.setFeaturedImage("http://robowall.hcii.cs.cmu.edu/wp-content/uploads/2013/03/1.jpg");
 		//t2.setFeaturedImage("layouts/chris.jpg");
 		//testGroup.addTile(t2);
 
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(2, 1, 2, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(2, 2, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(3, 2, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 3, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(1, 3, 3, 2)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(2, 1, 2, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(2, 2, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(3, 2, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 3, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(1, 3, 3, 2)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 1, 1)));
 
 		return testGroup;
 	};
 
 	tileGroup getTestTiles2(int index, ofRectangle bounds) {
 		tileGroup testGroup = tileGroup(index, bounds);
-			
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 0, 4, .5)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 1, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(1, 1, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(2, 1, 2, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 2, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(1, 2, 2, 2), false));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(3, 2, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 3, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(3, 3, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 2, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(2, 4, 2, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 5.5, 4, .5), false));
+		
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 0, 4, .5)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 1, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(1, 1, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(2, 1, 2, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 2, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(1, 2, 2, 2), false));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(3, 2, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 3, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(3, 3, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 2, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(2, 4, 2, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 5.5, 4, .5), false));
 
 		return testGroup;
 	};
@@ -58,13 +59,13 @@ namespace routineFactory {
 	tileGroup getTestTiles3(int index, ofRectangle bounds) {
 		tileGroup testGroup = tileGroup(index, bounds);
 			
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 1, 1.5, 2)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(1.5, 1, 2.5, 2)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 3, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(1, 3, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(2, 3, 2, 2)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 1, 1)));
-		testGroup.addTile(gridTile(ofRandom(256), "Test", ofRectangle(1, 4, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 1, 1.5, 2)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(1.5, 1, 2.5, 2)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 3, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(1, 3, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(2, 3, 2, 2)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(0, 4, 1, 1)));
+		testGroup.addTile(new gridTile(ofRandom(256), "Test", ofRectangle(1, 4, 1, 1)));
 
 		return testGroup;
 	};
@@ -77,7 +78,7 @@ namespace routineFactory {
 		
 		if (SCREENS >= 1) {
 			testRoutine.addGroup(getTestTiles1(0, ofRectangle(MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
-		
+
 			if (SCREENS >= 2) {
 				testRoutine.addGroup(getTestTiles2(1, ofRectangle(wall::SCREEN_W + MARGIN_GROUP, MARGIN_GROUP, wall::GROUP_W, wall::GROUP_H)));
 			
@@ -96,7 +97,7 @@ namespace routineFactory {
 	 * Tiles need to be layed out in a grid according to their
 	 * preferred size vs the amount of space available.
 	 */
-	void organizeRoutine(routine* r, list<gridTile>* t) {
+	void organizeRoutine(routine* r, list<gridTile*>* t) {
 		//TODO Organize the tiles into groups and lay them out
 	};
 
@@ -104,12 +105,12 @@ namespace routineFactory {
 	 * Create a new tile object by parsing the given json
 	 * element.
 	 */
-	gridTile parseTile(ofxJSONElement json) {
-		gridTile newTile = gridTile(json["id"].asInt(), json["title"].asString(), json["content"].asString());
+	gridTile* parseTile(ofxJSONElement json) {
+		gridTile* newTile = new gridTile(json["id"].asInt(), json["title"].asString(), json["content"].asString());
 		
 		for (int i = 0; i < json["media"].size(); i++) {
-			if (i == 0) newTile.setFeaturedImage(json["media"][i].asString());
-			else newTile.addImage(json["media"][i].asString());
+			if (i == 0) newTile->setFeaturedImage(json["media"][i].asString());
+			else newTile->addImage(json["media"][i].asString());
 		}
 		
 		return newTile;
@@ -139,7 +140,7 @@ namespace routineFactory {
 			routine newRoutine = parseRoutine(jsonRoutines[i]);
 
 			int routineId = newRoutine.getId();
-			list<gridTile> routineTiles;
+			list<gridTile*> routineTiles;
 
 			//Get a list of all the tiles associated with a routine
 			for (int j = 0; j < jsonArticles.size(); j++) {

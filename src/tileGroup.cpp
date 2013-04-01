@@ -31,7 +31,8 @@ void tileGroup::set(int index, ofRectangle boundingBox) {
 }
 
 tileGroup::~tileGroup() {
-	
+	//I don't know why this results in errors.  The pointers need to be cleaned up...
+	//while(!tiles.empty()) delete tiles.front(), tiles.pop_front();
 }
 
 /*
@@ -39,8 +40,8 @@ tileGroup::~tileGroup() {
  * that one.
  */
 void tileGroup::update() {
-	for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->update();
+	for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		(*it)->update();
 	}
 
 	if (focus != 0) {
@@ -62,8 +63,8 @@ void tileGroup::draw() {
 	ofPushStyle();
 	ofSetColor(tileColor);
 
-	for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->draw();
+	for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		(*it)->draw();
 	}
 
 	if (focus != 0) focus->draw();
@@ -79,8 +80,8 @@ void tileGroup::draw() {
 bool tileGroup::mouseMoved(int x, int y)  {
 	bool hit = false;
 	if (focus == 0) {
-		for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			if (it->mouseMoved(x, y)) hit = true;
+		for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+			if ((*it)->mouseMoved(x, y)) hit = true;
 		}
 	} else {
 		focus->mouseMoved(x, y);
@@ -91,8 +92,8 @@ bool tileGroup::mouseMoved(int x, int y)  {
 bool tileGroup::mouseDragged(int x, int y, int button) {
 	bool hit = false;
 	if (focus == 0) {
-		for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			if (it->mouseDragged(x, y, button)) hit = true;
+		for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+			if ((*it)->mouseDragged(x, y, button)) hit = true;
 		}
 	} else {
 		if (focus->mouseDragged(x, y, button)) hit = true;
@@ -103,10 +104,10 @@ bool tileGroup::mouseDragged(int x, int y, int button) {
 bool tileGroup::mousePressed(int x, int y, int button) {
 	bool hit = false;
 	if (focus == 0) {
-		for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			if (it->mousePressed(x, y, button)) {
+		for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+			if ((*it)->mousePressed(x, y, button)) {
 				hit = true;
-				focus = it->getExpanded();
+				focus = (*it)->getWhenFocused();
 			}
 		}
 	} else {
@@ -118,8 +119,8 @@ bool tileGroup::mousePressed(int x, int y, int button) {
 bool tileGroup::mouseReleased(int x, int y, int button) {
 	bool hit = false;
 	if (focus == 0) {
-		for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			if (it->mouseReleased(x, y, button)) hit = true;
+		for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+			if ((*it)->mouseReleased(x, y, button)) hit = true;
 		}
 	} else {
 		if (focus->mouseReleased(x, y, button)) hit = true;
@@ -130,17 +131,18 @@ bool tileGroup::mouseReleased(int x, int y, int button) {
 /*
  * Add a tile to the group.
  */
-void tileGroup::addTile(gridTile t) {
-	t.setOffscreenPosition(getClosestOffscreenPosition(t));
+void tileGroup::addTile(tile* t) {
+	cout<<"Adding tile"<<t->getId()<<"\n";
+	t->setOffscreenPosition(getClosestOffscreenPosition(t));
 	tiles.push_back(t);
 }
 
 /*
  * Remove the given tile from the group.
  */
-void tileGroup::removeTile(gridTile* t) {
+void tileGroup::removeTile(tile* t) {
 	int index = getTileIndex(t);
-    list<gridTile>::iterator it = tiles.begin();
+    list<tile*>::iterator it = tiles.begin();
 	if (index >= 0) {
 		advance(it, index);
 		tiles.erase(it);
@@ -150,10 +152,10 @@ void tileGroup::removeTile(gridTile* t) {
 /*
  * Get the index of the given tile.
  */
-int tileGroup::getTileIndex(gridTile* t) {
+int tileGroup::getTileIndex(tile* t) {
 	int index = 0;
-	for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		if (&*it == t) return index;
+	for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		if (*it == t) return index;
 		index++;
 	}
 	return -1;
@@ -162,10 +164,10 @@ int tileGroup::getTileIndex(gridTile* t) {
 /*
  * Get a pointer to the tile at the specified index.
  */
-gridTile* tileGroup::getTileAt(int index) {
-    list<gridTile>::iterator it = tiles.begin();
+tile* tileGroup::getTileAt(int index) {
+    list<tile*>::iterator it = tiles.begin();
 	advance(it, index);
-	return &*it;
+	return *it;
 }
 
 /*
@@ -174,8 +176,8 @@ gridTile* tileGroup::getTileAt(int index) {
 bool tileGroup::isAnimating() {
 	if (focus != 0) return true;
 
-	for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		if (it->isAnimating()) return true;
+	for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		if ((*it)->isAnimating()) return true;
 	}
 	
 	return false;
@@ -186,8 +188,8 @@ bool tileGroup::isAnimating() {
  * from a random edge.
  */
 void tileGroup::setupEntrance() {
-	for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->setState(ENTER);
+	for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		(*it)->setState(ENTER);
 	}
 }
 
@@ -199,8 +201,8 @@ void tileGroup::setupEntrance() {
 void tileGroup::setupExit() {
 	if (focus != 0) focus->setState(EXIT);
 
-	for (list<gridTile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-		it->setState(EXIT);
+	for (list<tile*>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		(*it)->setState(EXIT);
 	}
 }
 
@@ -211,10 +213,10 @@ void tileGroup::setupExit() {
  *
  * Default to the top of the screen.
  */
-ofPoint tileGroup::getClosestOffscreenPosition(gridTile t) {
+ofPoint tileGroup::getClosestOffscreenPosition(tile* t) {
 	int edge = EDGE_TOP;
 	
-	ofRectangle grid = t.getGridRect();
+	ofRectangle grid = t->getGridRect();
 	int col = grid.getX();
 	int row = grid.getY();
 
@@ -245,7 +247,7 @@ ofPoint tileGroup::getClosestOffscreenPosition(gridTile t) {
 		}
 	}
 
-	ofPoint p = ofPoint(t.getFinalPosition());
+	ofPoint p = ofPoint(t->getDefaultPosition());
 
 	switch (edge) {
 		case EDGE_LEFT:

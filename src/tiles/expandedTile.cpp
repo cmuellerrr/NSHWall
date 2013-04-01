@@ -38,27 +38,6 @@ void expandedTile::set(int id, string title, string content) {
 	tileRect = ofRectangle(x, y, 0, 0);
 }
 
-/*
- * Update the tile.  We really only care if it is animating.
- * Update any animations it has, and remove any that are done.
- */
-void expandedTile::update() {
-	if (state != HIDDEN) {
-		//This is a little different because we are removing things while traversing
-		for (list<animation*>::iterator it = animations.begin(); it != animations.end();) {
-			if ((*it)->isDone()) {
-				delete *it;
-				it = animations.erase(it);
-			}
-			else {
-				(*it)->update();
-				++it;
-			}
-		}
-		if (state == ENTER && animations.empty()) setState(ACTIVE);
-		if (state == EXIT && animations.empty()) setState(HIDDEN);
-	}
-}
 
 /*
  * Draw the tile.
@@ -79,13 +58,6 @@ void expandedTile::draw() {
  * Handle all input.  Return if something happened.
  */
 
-bool expandedTile::mouseMoved(int x, int y)  {
-	return false;
-}
-
-bool expandedTile::mouseDragged(int x, int y, int button) {
-	return false;
-}
         
 bool expandedTile::mousePressed(int x, int y, int button) {
 	if (tileRect.inside(x, y)) {
@@ -93,9 +65,10 @@ bool expandedTile::mousePressed(int x, int y, int button) {
 	}
 	return false;
 }
-        
-bool expandedTile::mouseReleased(int x, int y, int button) {
-	return false;
+
+void expandedTile::checkStateTransition() {
+	if (state == ENTER && animations.empty()) setState(ACTIVE);
+	if (state == EXIT && animations.empty()) setState(HIDDEN);
 }
 
 /*
