@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "expandedTile.h"
 #include "pointAnimation.h"
+#include "ofxTextSuite.h"
 
 //The margin surrounding an individual tile
 #define MARGIN_TILE 5
@@ -69,4 +70,7 @@ class tile {
 		ofImage featuredImg;
 		
 		expandedTile expanded;
+        ofxTextBlock textContent;
+        ofFbo fbo;
+        ofColor tileColor;
 };

@@ -60,7 +60,7 @@ void tileGroup::draw() {
 	ofTranslate(boundingBox.getPosition());
 
 	ofPushStyle();
-	ofSetColor(tileColor);
+//	ofSetColor(tileColor);
 
 	for (list<tile>::iterator it = tiles.begin(); it != tiles.end(); it++) {
 		it->draw();

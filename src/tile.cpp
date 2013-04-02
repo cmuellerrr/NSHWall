@@ -61,6 +61,41 @@ void tile::set(int id, string title, string content, ofRectangle gridRect, bool 
 	tileRect = ofRectangle(finalPosition, w, h);
 
 	expanded = expandedTile(id, title, content);
+    textContent.init("Lato-Bla", 14);
+    textContent.setText("Project Title");
+    textContent.wrapTextX(w - 2 * 10);
+    textContent.setColor(255,255,255,255);
+    
+    tileColor = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
+    
+    ofFbo::Settings fboSettings;
+    fboSettings.internalformat = GL_RGBA32F_ARB;
+    fboSettings.useDepth = true;
+    fboSettings.useStencil = true;
+    fboSettings.textureTarget = GL_TEXTURE_2D;
+    fboSettings.width = w;
+    fboSettings.height = h;
+    fboSettings.numSamples = 2;
+    
+    fbo.allocate(fboSettings);
+    
+    fbo.begin();
+    ofClear(0,0,0,255);
+    fbo.end();
+    
+    fbo.begin();
+    ofPushStyle();
+    ofEnableAlphaBlending();
+    ofFill();
+    ofSetColor(tileColor);
+    ofRect(0,0,w,h);
+    textContent.setColor(0, 0, 0, 255);
+    textContent.drawLeft(10, fbo.getHeight() - 10 - textContent.getHeight() + 1);
+    textContent.setColor(255, 255, 255, 100);
+    textContent.drawLeft(10, fbo.getHeight() - 10 - textContent.getHeight());
+    ofDisableAlphaBlending();
+    ofPopStyle();
+    fbo.end();
 }
 
 tile::~tile() {
@@ -86,6 +121,11 @@ void tile::update() {
 		}
 		if (state == ENTER && animations.empty()) setState(ACTIVE);
 		if (state == EXIT && animations.empty()) setState(HIDDEN);
+        
+//        ofEnableAlphaBlending();
+//        glEnable(GL_TEXTURE_2D);
+
+//        glDisable(GL_TEXTURE_2D);
 	}
 }
 
@@ -99,10 +139,18 @@ void tile::draw() {
 		if (featuredImg.isAllocated()) {
 			featuredImg.draw(tileRect);
 		} else {
-			ofFill();
-			ofRect(tileRect);
+//            ofSetColor(tileColor);
+//			ofFill();
+//			ofRect(tileRect);
 		}
-
+//        textContent.drawLeft(tileRect.getPosition().x + 10, tileRect.getPosition().y + tileRect.getHeight() - 10 - textContent.getHeight());
+        fbo.getTextureReference().bind();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ZERO);
+//        glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        fbo.draw(tileRect.getPosition().x, tileRect.getPosition().y, tileRect.getWidth(), tileRect.getHeight());
+        glDisable(GL_BLEND);
+        fbo.getTextureReference().unbind();
 		ofPopStyle();
 	}
 }
