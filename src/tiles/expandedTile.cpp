@@ -1,8 +1,16 @@
+/*
+ * A class representing the expanded version of an article tile.
+ * The tiles expand from the top left corner to show the full article 
+ * contents and their related media.
+ */
+
 #include "wall.h"
 #include "expandedTile.h"
 
 /*
- * Create an expaned version of a normal tile.
+ * Create the tile with the given parameters.  Every constructor
+ * calls the 'set' function with default parameters if not required by 
+ * the constructor.
  */
 expandedTile::expandedTile() {
 	set(ofRandom(1000), "", "");
@@ -17,7 +25,7 @@ expandedTile::expandedTile(int id, string title, string content) {
 }
 
 expandedTile::~expandedTile() {
-	
+	//TODO clean up animations and images
 }
 
 /*
@@ -29,13 +37,7 @@ void expandedTile::set(int id, string title, string content) {
 	this->title = title;
 	this->content = content;
 
-	int x = (wall::TILE_W / 2) + MARGIN_TILE;
-	int y = (wall::TILE_H * 0.75) + MARGIN_TILE;
-	int w = (wall::SCREEN_W * 0.75) - (MARGIN_TILE * 2);
-	int h = (wall::TILE_H * (ROWS - 2));
-
-	finalSize = ofPoint(w, h);
-	tileRect = ofRectangle(x, y, 0, 0);
+	translateGridDimensions();
 }
 
 
@@ -55,34 +57,23 @@ void expandedTile::draw() {
 }
 
 /*
- * Handle all input.  Return if something happened.
+ * If clicked, set to exit.
  */
-
-        
 bool expandedTile::mousePressed(int x, int y, int button) {
-	if (tileRect.inside(x, y)) {
+	if (state == ACTIVE && tileRect.inside(x, y)) {
 		setState(EXIT);
+		return true;
 	}
 	return false;
 }
 
+/*
+ * Check for any state transitions based on the tile's
+ * current state.  If found, update the tile's current state.
+ */
 void expandedTile::checkStateTransition() {
 	if (state == ENTER && animations.empty()) setState(ACTIVE);
 	if (state == EXIT && animations.empty()) setState(HIDDEN);
-}
-
-/*
- * Return if the tile is, or will be, animating.
- */
-bool expandedTile::isAnimating() {
-	return !animations.empty();
-}
-
-/*
- * Add the given image to the tile's list.
- */
-void expandedTile::addImage(ofImage img) {
-	images.push_back(img);
 }
 
 /*
@@ -93,7 +84,7 @@ void expandedTile::setState(int newState) {
 	std::cout<<"Setting feature ("<<id<<") state to "<<newState<<'\n';
 	switch (newState) {
 		case ENTER:
-			animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, finalSize, .3, BOUNCY));
+			animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, defaultSize, .3, BOUNCY));
 			break;
 		case EXIT:
 			animations.push_front(new dimensionAnimation(&tileRect.width, &tileRect.height, ofPoint(0, 0), .3, BOUNCY));
@@ -102,6 +93,27 @@ void expandedTile::setState(int newState) {
 	state = newState;	
 }
 
-void expandedTile::setContent(string newContent) {
-	content = newContent;
+/*
+ * Add the given image to the tile's list.
+ */
+void expandedTile::addImage(ofImage img) {
+	images.push_back(img);
+}
+
+/*
+ * Set up the tile rectangle based on the grid
+ * rectangle.  Basically, translate the grid dimensions
+ * into pixel dimensions.  Also set the default position
+ * and offscreen position.
+ */
+void expandedTile::translateGridDimensions() {
+	int x = (wall::TILE_W / 2) + MARGIN_TILE;
+	int y = (wall::TILE_H * 0.75) + MARGIN_TILE;
+	int w = (wall::SCREEN_W * 0.75) - (MARGIN_TILE * 2);
+	int h = (wall::TILE_H * (ROWS - 2));
+
+	tileRect = ofRectangle(x, y, 0, 0);
+	defaultPosition = ofPoint(tileRect.x, tileRect.y);
+	offscreenPosition = ofPoint(tileRect.x, -ofGetWindowHeight());
+	defaultSize = ofPoint(w, h);
 }

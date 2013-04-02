@@ -40,7 +40,7 @@ class tile {
 
     protected:
 
-		void translateGridDimensions();
+		virtual void translateGridDimensions();
 
 		int state;
 		int id;

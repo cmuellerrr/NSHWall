@@ -90,7 +90,8 @@ void twitterTile::draw() {
 }
 
 /*
- * Get a pointer to the routine at the specified index.
+ * Check for any state transitions based on the tile's
+ * current state.  If found, update the tile's current state.
  */
 void twitterTile::checkStateTransition() {
 	if (state == ENTER && animations.empty()) setState(FADE_IN);
@@ -100,7 +101,8 @@ void twitterTile::checkStateTransition() {
 }
 
 /*
- * Get a pointer to the routine at the specified index.
+ * Set the tile's state.
+ * The animation objects are getting allocated to the heap so make sure they get deleted when done.
  */
 void twitterTile::setState(int newState) {
 	routineTile::setState(newState);

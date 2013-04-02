@@ -16,25 +16,26 @@ class expandedTile : public tile {
 		expandedTile(int id, string title, string content);
 		~expandedTile();
 
-		void draw();
+		virtual void draw();
 
-        bool mousePressed(int x, int y, int button);
+        virtual bool mousePressed(int x, int y, int button);
 
-		void checkStateTransition();
+		virtual void checkStateTransition();
 
-		bool isAnimating();
+		virtual void setState(int newState);
 
-		void setState(int newState);
-		void setContent(string newContent);
+		virtual void setContent(string newContent) {content = newContent;}
 
-		void addImage(ofImage img);
+		virtual void addImage(ofImage img);
 
 	protected:
 		
+		virtual void translateGridDimensions();
+
 		string title;
 		string content;
 
-		ofPoint finalSize;
+		ofPoint defaultSize;
 
 		list<ofImage> images;
 
