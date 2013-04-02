@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxJSONElement.h"
-#include "tile.h"
+#include "routineTile.h"
 #include "pointAnimation.h"
 
 #define DISPLAY_THRESHOLD 5000
@@ -15,7 +15,7 @@ struct tweet {
 	string text;
 };
 
-class twitterTile : public tile {
+class twitterTile : public routineTile {
 
     public:
 
@@ -36,12 +36,6 @@ class twitterTile : public tile {
 		void setTag(string newTag);
 
     protected:
-		
-		void setupTweets();
-		tweet parseTweet(ofxJSONElement json);
-
-		int getTweetIndex(tweet* t);
-		tweet* getTweetAt(int index);
 
 		string tag;
 		list<tweet> tweets;
@@ -52,4 +46,10 @@ class twitterTile : public tile {
 	private:
 
 		void set(int id, string tag, ofRectangle gridRect);
+		
+		void setupTweets();
+		tweet parseTweet(ofxJSONElement json);
+
+		int getTweetIndex(tweet* t);
+		tweet* getTweetAt(int index);
 };

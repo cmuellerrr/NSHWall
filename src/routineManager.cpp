@@ -74,7 +74,7 @@ void routineManager::mouseMoved(int x, int y, int screen) {
 void routineManager::mouseDragged(int x, int y, int button, int screen) {
 	if (activeRoutine != 0) {
 		bool hit = activeRoutine->mouseDragged(x, y, button, screen);
-		if (hit) resetHitTimer();
+		//if (hit) resetHitTimer();
 	}
 }
 

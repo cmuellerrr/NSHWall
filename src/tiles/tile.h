@@ -10,11 +10,7 @@ class tile {
 
     public:
 
-		tile();
-		tile(int id);
-		tile(int id, ofRectangle gridRect);
-		tile(int id, ofRectangle gridRect, bool clickable);
-		~tile();
+		virtual ~tile();
 
 		virtual void update();
 		virtual void draw();
@@ -24,12 +20,12 @@ class tile {
         virtual bool mousePressed(int x, int y, int button);
         virtual bool mouseReleased(int x, int y, int button);
 
-		virtual void checkStateTransition();
+		virtual void checkStateTransition() = 0;
 
 		virtual bool isAnimating();		
 
 		virtual int getState() {return state;}
-		virtual void setState(int newState) {state = newState;}
+		virtual void setState(int newState) = 0;
 		virtual int getId() {return id;}
 
 		virtual ofPoint getDefaultPosition() {return defaultPosition;}
@@ -44,11 +40,10 @@ class tile {
 
     protected:
 
-		void setupTileRect();
+		void translateGridDimensions();
 
 		int state;
 		int id;
-		bool clickable;
 
 		ofPoint defaultPosition;
 		ofPoint offscreenPosition;
@@ -58,7 +53,4 @@ class tile {
 
 		list<animation*> animations;
 
-	private:
-
-		virtual void set(int id, ofRectangle gridRect, bool clickable);
 };

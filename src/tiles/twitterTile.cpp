@@ -1,8 +1,17 @@
+/*
+ * A class representing tiles which display tweets according to a specific tag.  Tweets
+ * are cycled through according to the threshold set in the header file.
+ */
 
 #include "wall.h"
 #include "twitterTile.h"
 #include "webInterface.h"
 
+/*
+ * Create the tile with the given parameters.  Every constructor
+ * calls the 'set' function with default parameters if not required by 
+ * the constructor.
+ */
 twitterTile::twitterTile() {
 	set(ofRandom(1000), "#robowall", ofRectangle(0, 5.5, 4, .5));
 }
@@ -27,6 +36,9 @@ twitterTile::~twitterTile() {
 
 }
 
+/*
+ * Do the actual work for setting up the tile.
+ */
 void twitterTile::set(int id, string tag, ofRectangle gridRect) {
 	state = HIDDEN;
 	this->id = id;
@@ -37,15 +49,17 @@ void twitterTile::set(int id, string tag, ofRectangle gridRect) {
 
 	activeTweet = 0;
 
-	setupTileRect();
-	defaultPosition = ofPoint(tileRect.x, tileRect.y);
-	offscreenPosition = ofPoint(tileRect.x, -ofGetWindowHeight());
+	translateGridDimensions();
 
 	setupTweets();
 }
 
+/*
+ * Update the tile as normal then account for the transition between
+ * tweets.
+ */
 void twitterTile::update() {
-	tile::update();
+	routineTile::update();
 
 	if (state != HIDDEN) {
 		//Based on timing differences, change the current tweet
@@ -55,18 +69,29 @@ void twitterTile::update() {
 	}
 }
 
+/*
+ * Draw the tile as normal but then display the active tweet on it.
+ * TODO think about displaying the user's profile picture too.
+ */
 void twitterTile::draw() {
-	tile::draw();
+	routineTile::draw();
 
 	if (state != HIDDEN) {
+		ofPushStyle();
+
 		//Display the active tweet
 		if (activeTweet != 0) {
 			ofSetColor(0, 0, 0);
 			ofDrawBitmapString(activeTweet->userName + ": " + activeTweet->text, tileRect.x + 12, tileRect.y + 12);
 		}
+
+		ofPopStyle();
 	}
 }
 
+/*
+ * Get a pointer to the routine at the specified index.
+ */
 void twitterTile::checkStateTransition() {
 	if (state == ENTER && animations.empty()) setState(FADE_IN);
 	if (state == FADE_IN && animations.empty()) setState(ACTIVE);
@@ -74,18 +99,13 @@ void twitterTile::checkStateTransition() {
 	if (state == EXIT && animations.empty()) setState(HIDDEN);
 }
 
+/*
+ * Get a pointer to the routine at the specified index.
+ */
 void twitterTile::setState(int newState) {
-	std::cout<<"Setting tile ("<<id<<") state to "<<newState<<'\n';
+	routineTile::setState(newState);
 
 	switch (newState) {
-		case ENTER:
-			//Move the tile off screen
-			tileRect.setPosition(offscreenPosition);
-			animations.push_front(new pointAnimation(&tileRect.position, defaultPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
-			break;
-		case EXIT:
-			animations.push_front(new pointAnimation(&tileRect.position, offscreenPosition, 1.5, TANH, PLAY_ONCE, ofRandom(.5)));
-			break;
 		case FADE_IN:
 			{//This needs its own scope
 				//Swap tweets
@@ -103,15 +123,23 @@ void twitterTile::setState(int newState) {
 			//TODO add fade out animation
 			break;
 	}	
-	state = newState;
 }
 
+/*
+ * Set the tile's current tag.  Refresh the list of
+ * tweets accordingly.
+ */
 void twitterTile::setTag(string newTag) {
 	tag = newTag;
 	//TODO Clear out the current tweets
 	setupTweets();
 }
 
+/*
+ * Setup the tweets to be displayed by this tile.  Use the 
+ * web interface to get the json results for the tile's tag
+ * and then parse them into a list of tweet objects.
+ */
 void twitterTile::setupTweets() {
 	ofxJSONElement jsonTweets = webInterface::getTweets(tag);
 	ofxJSONElement jsonResults = jsonTweets["results"];
@@ -121,6 +149,9 @@ void twitterTile::setupTweets() {
 	}
 }
 
+/*
+ * Create a tweet object for the given json object.
+ */
 tweet twitterTile::parseTweet(ofxJSONElement json) {
 	tweet newTweet;
 	newTweet.date = json["created_at"].asString();
