@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "tile.h"
-#include "expandedTile.h"
 
 //The margin surrounding a tile group.
 #define MARGIN_GROUP 10
@@ -15,8 +14,6 @@ class tileGroup {
 		tileGroup(int index, ofRectangle bounds);
 		~tileGroup();
 
-		void set(int index, ofRectangle bounds);
-
 		void update();
 		void draw();
         
@@ -28,7 +25,7 @@ class tileGroup {
 		void setupEntrance();
 		void setupExit();
 
-		void addTile(tile t);
+		void addTile(tile* t);
 		void removeTile(tile* t);
 
 		bool isAnimating();
@@ -36,7 +33,10 @@ class tileGroup {
 		int getIndex() {return index;}
 
     private:
-		ofPoint getClosestOffscreenPosition(tile t);
+
+		void set(int index, ofRectangle bounds);
+
+		ofPoint getClosestOffscreenPosition(tile* t);
 
 		int getTileIndex(tile* t);
 		tile* getTileAt(int index);
@@ -45,8 +45,8 @@ class tileGroup {
 
 		ofRectangle boundingBox;
 
-	    list<tile> tiles;
-		expandedTile* focus;
+	    list<tile*> tiles;
+		tile* focus;
 
 		ofColor tileColor;
 };
