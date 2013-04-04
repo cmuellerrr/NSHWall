@@ -4,7 +4,7 @@
 #include "tileGroup.h"
 
 //Represent the possible states of a routine.
-enum{ENTER, ACTIVE, EXIT, HIDDEN};
+enum{ENTER, ACTIVE, EXIT, HIDDEN, FADE_IN, FADE_OUT};
 
 class routine {
 
