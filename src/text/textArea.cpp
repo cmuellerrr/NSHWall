@@ -1,5 +1,9 @@
 #include "textArea.h"
 
+textArea::textArea() {
+    
+}
+
 textArea::textArea(Settings settings) {
     name = settings.name;
     textContent = settings.textContent;
@@ -18,6 +22,7 @@ textArea::textArea(Settings settings) {
     fontName = settings.fontName;
     fontSize = settings.fontSize;
     textColor = settings.textColor;
+    isShadow = settings.isShadow;
     
     build();
 }
@@ -46,6 +51,8 @@ void textArea::build() {
     fboSettings.numSamples = 2;
     
     fbo.allocate(fboSettings);
+    
+    createFBO();
 }
 
 void textArea::createFBO() {
@@ -59,8 +66,10 @@ void textArea::createFBO() {
     ofFill();
     ofSetColor(ofColor(ofRandom(255), ofRandom(255), ofRandom(255)));
     ofRect(0,0,width,height);
-    textBlock.setColor(0, 0, 0, 255);
-    textBlock.drawLeft(10, fbo.getHeight() - 10 - textBlock.getHeight() + 1);
+    if (isShadow) {
+        textBlock.setColor(0, 0, 0, 255);
+        textBlock.drawLeft(10, fbo.getHeight() - 10 - textBlock.getHeight() + 1);
+    }
     textBlock.setColor(textColor);
     textBlock.drawLeft(10, fbo.getHeight() - 10 - textBlock.getHeight());
     ofDisableAlphaBlending();
@@ -68,11 +77,11 @@ void textArea::createFBO() {
     fbo.end();
 }
 
-void textArea::draw() {
+void textArea::draw(ofPoint currentPosition) {
     fbo.getTextureReference().bind();
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ZERO);
-    fbo.draw(x, y, width, height);
+    fbo.draw(currentPosition.x, currentPosition.y, width, height);
     glDisable(GL_BLEND);
     fbo.getTextureReference().unbind();
 }
@@ -100,4 +109,5 @@ textArea::Settings::Settings() {
     marginRight = 0;
     marginTop = 0;
     marginBottom = 0;
+    isShadow = true;
 }

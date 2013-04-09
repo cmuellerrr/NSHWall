@@ -9,6 +9,7 @@ public:
     
     struct Settings;
     
+    textArea();
     textArea(Settings settings);
     ~textArea();
     
@@ -21,7 +22,7 @@ public:
     void build();
     void createFBO();
     void update();
-    void draw();
+    void draw(ofPoint currentPosition);
     void addChild(Settings settings);
     void getChild(string name);
     
@@ -44,6 +45,7 @@ public:
         int marginRight;
         int marginTop;
         int marginBottom;
+        bool isShadow;
         
 		Settings();
 	};
@@ -71,6 +73,7 @@ protected:
     int marginRight;
     int marginTop;
     int marginBottom;
+    bool isShadow;
     
     int fontSize;
     

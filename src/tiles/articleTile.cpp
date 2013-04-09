@@ -55,44 +55,20 @@ void articleTile::set(int id, string title, string content, ofRectangle gridRect
 	this->clickable = clickable;
 
 	translateGridDimensions();
+    
+    textArea::Settings textAreaSettings;
+    textAreaSettings.width = tileRect.getWidth();
+    textAreaSettings.height = tileRect.getHeight();
+    string randContent;
+    ostringstream convert;
+    convert << ofRandom(25555);
+    randContent = convert.str();
+    textAreaSettings.textContent = randContent;
+    textAreaSettings.isShadow = ofRandom(50) > 25;
+
+    mainTextArea = textArea(textAreaSettings);
 	
 	expanded = expandedTile(id, title, content);
-    
-    textContent.init("Lato-Bla", 14);
-    textContent.setText("Project Title");
-    textContent.wrapTextX(this->tileRect.getWidth() - 2 * 10);
-    textContent.setColor(255,255,255,255);
-    
-    tileColor = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
-    
-    ofFbo::Settings fboSettings;
-    fboSettings.internalformat = GL_RGBA32F_ARB;
-    fboSettings.useDepth = true;
-    fboSettings.useStencil = true;
-    fboSettings.textureTarget = GL_TEXTURE_2D;
-    fboSettings.width = this->tileRect.getWidth();
-    fboSettings.height = this->tileRect.getHeight();
-    fboSettings.numSamples = 2;
-    
-    fbo.allocate(fboSettings);
-    
-    fbo.begin();
-    ofClear(0,0,0,255);
-    fbo.end();
-    
-    fbo.begin();
-    ofPushStyle();
-    ofEnableAlphaBlending();
-    ofFill();
-    ofSetColor(tileColor);
-    ofRect(0,0,this->tileRect.getWidth(),this->tileRect.getHeight());
-    textContent.setColor(0, 0, 0, 255);
-    textContent.drawLeft(10, fbo.getHeight() - 10 - textContent.getHeight() + 1);
-    textContent.setColor(255, 255, 255, 100);
-    textContent.drawLeft(10, fbo.getHeight() - 10 - textContent.getHeight());
-    ofDisableAlphaBlending();
-    ofPopStyle();
-    fbo.end();
 
 }
 
@@ -109,13 +85,7 @@ void articleTile::draw() {
 //			ofFill();
 //			ofRect(tileRect);
 		}
-        fbo.getTextureReference().bind();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ZERO);
-        //        glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-        fbo.draw(tileRect.getPosition().x, tileRect.getPosition().y, tileRect.getWidth(), tileRect.getHeight());
-        glDisable(GL_BLEND);
-        fbo.getTextureReference().unbind();
+        mainTextArea.draw(tileRect.getPosition());
 		ofPopStyle();
 	}
 }

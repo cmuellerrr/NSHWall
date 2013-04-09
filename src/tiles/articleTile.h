@@ -4,6 +4,7 @@
 #include "routineTile.h"
 #include "expandedTile.h"
 #include "pointAnimation.h"
+#include "textArea.h"
 
 
 class articleTile : public routineTile {
@@ -43,6 +44,8 @@ class articleTile : public routineTile {
         ofxTextBlock textContent;
         ofFbo fbo;
         ofColor tileColor;
+    
+        textArea mainTextArea;
 
 	private:
 
