@@ -64,7 +64,9 @@ void articleTile::set(int id, string title, string content, ofRectangle gridRect
     convert << ofRandom(25555);
     randContent = convert.str();
     textAreaSettings.textContent = randContent;
-    textAreaSettings.isShadow = ofRandom(50) > 25;
+    textAreaSettings.isShadow = true;
+    textAreaSettings.shadowX = 1;
+    textAreaSettings.shadowY = 1;
 
     mainTextArea = textArea(textAreaSettings);
 	

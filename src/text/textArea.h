@@ -32,6 +32,7 @@ public:
         string fontName;
         ofColor textColor;
         ofColor backgroundColor;
+        ofColor shadowColor;
         int fontSize;
         int width;
         int height;
@@ -45,6 +46,9 @@ public:
         int marginRight;
         int marginTop;
         int marginBottom;
+        int shadowX;
+        int shadowY;
+        float shadowBlur;
         bool isShadow;
         
 		Settings();
@@ -73,6 +77,8 @@ protected:
     int marginRight;
     int marginTop;
     int marginBottom;
+    int shadowX;
+    int shadowY;
     bool isShadow;
     
     int fontSize;

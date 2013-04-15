@@ -22,6 +22,8 @@ textArea::textArea(Settings settings) {
     fontName = settings.fontName;
     fontSize = settings.fontSize;
     textColor = settings.textColor;
+    shadowX = settings.shadowX;
+    shadowY = settings.shadowY;
     isShadow = settings.isShadow;
     
     build();
@@ -68,7 +70,7 @@ void textArea::createFBO() {
     ofRect(0,0,width,height);
     if (isShadow) {
         textBlock.setColor(0, 0, 0, 255);
-        textBlock.drawLeft(10, fbo.getHeight() - 10 - textBlock.getHeight() + 1);
+        textBlock.drawLeft(10 + shadowY, fbo.getHeight() - 10 - textBlock.getHeight() + shadowY);
     }
     textBlock.setColor(textColor);
     textBlock.drawLeft(10, fbo.getHeight() - 10 - textBlock.getHeight());
@@ -95,6 +97,7 @@ textArea::Settings::Settings() {
     textContent = "Woot!";
     fontName = "Lato-Bla";
     textColor = ofColor::white;
+    shadowColor = ofColor::black;
     backgroundColor = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
     fontSize = 14;
 	width = 0;
@@ -109,5 +112,7 @@ textArea::Settings::Settings() {
     marginRight = 0;
     marginTop = 0;
     marginBottom = 0;
+    shadowX = 0;
+    shadowY = 0;
     isShadow = true;
 }
