@@ -9,6 +9,29 @@ public:
     
     struct Settings;
     
+    enum textHorizontalAlignment {
+        LEFT,
+        RIGHT,
+        CENTER,
+        JUSTIFY
+    };
+    
+    enum textVerticalAlignment {
+        TOP,
+        MIDDLE,
+        BOTTOM
+    };
+    
+    enum boxHeight {
+        AUTO_HEIGHT,
+        FIXED_HEIGHT
+    };
+    
+    enum boxWidth {
+        AUTO_WIDTH,
+        FIXED_WIDTH
+    };
+    
     textArea();
     textArea(Settings settings);
     ~textArea();
@@ -33,6 +56,10 @@ public:
         ofColor textColor;
         ofColor backgroundColor;
         ofColor shadowColor;
+        textHorizontalAlignment horizontalAlignment;
+        textVerticalAlignment verticalAlignment;
+        boxHeight boxHeight;
+        boxWidth boxWidth;
         int fontSize;
         int width;
         int height;
@@ -62,7 +89,10 @@ protected:
     ofColor backgroundColor;
     ofColor textColor;
     ofxTextBlock textBlock;
-    
+    textHorizontalAlignment horizontalAlignment;
+    textVerticalAlignment verticalAlignment;
+    boxHeight boxHeight;
+    boxWidth boxWidth;
     int x;
     int y;
     

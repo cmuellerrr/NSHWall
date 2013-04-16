@@ -1,7 +1,7 @@
 #include "textArea.h"
 
 textArea::textArea() {
-    
+    textArea(*new Settings());
 }
 
 textArea::textArea(Settings settings) {
@@ -25,6 +25,10 @@ textArea::textArea(Settings settings) {
     shadowX = settings.shadowX;
     shadowY = settings.shadowY;
     isShadow = settings.isShadow;
+    horizontalAlignment = settings.horizontalAlignment;
+    verticalAlignment = settings.verticalAlignment;
+    boxHeight = settings.boxHeight;
+    boxWidth = settings.boxWidth;
     
     build();
 }
@@ -40,8 +44,6 @@ void textArea::destroy() {
 void textArea::build() {
     textBlock.init(fontName, fontSize);
     textBlock.setText(textContent);
-    textBlock.wrapTextX(width - paddingLeft - paddingRight);
-    textBlock.setColor(textColor);
     
     ofFbo::Settings fboSettings;
     fboSettings.internalformat = GL_RGBA32F_ARB;
@@ -68,12 +70,41 @@ void textArea::createFBO() {
     ofFill();
     ofSetColor(ofColor(ofRandom(255), ofRandom(255), ofRandom(255)));
     ofRect(0,0,width,height);
-    if (isShadow) {
-        textBlock.setColor(0, 0, 0, 255);
-        textBlock.drawLeft(10 + shadowY, fbo.getHeight() - 10 - textBlock.getHeight() + shadowY);
+    switch (horizontalAlignment) {
+        case LEFT:
+            textBlock.wrapTextX(width - paddingLeft - paddingRight);
+            switch (verticalAlignment) {
+                case BOTTOM:
+                    if (isShadow) {
+                        textBlock.setColor(0, 0, 0, 150);
+                        textBlock.drawLeft(paddingLeft + shadowX, fbo.getHeight() - paddingBottom - textBlock.getHeight() + shadowY);
+                    }
+                    textBlock.setColor(textColor);
+                    textBlock.drawLeft(paddingLeft, fbo.getHeight() - paddingBottom - textBlock.getHeight());
+                    break;
+                case TOP:
+                    if (isShadow) {
+                        textBlock.setColor(0, 0, 0, 150);
+                        textBlock.drawLeft(paddingLeft + shadowX, paddingTop + shadowY);
+                    }
+                    textBlock.setColor(textColor);
+                    textBlock.drawLeft(paddingLeft, paddingTop);
+                    break;
+                case MIDDLE:
+                    break;
+            }
+            break;
+        case RIGHT:
+            
+            break;
+        case CENTER:
+            
+            break;
+        case JUSTIFY:
+            
+            break;
+            
     }
-    textBlock.setColor(textColor);
-    textBlock.drawLeft(10, fbo.getHeight() - 10 - textBlock.getHeight());
     ofDisableAlphaBlending();
     ofPopStyle();
     fbo.end();
@@ -84,6 +115,11 @@ void textArea::draw(ofPoint currentPosition) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ZERO);
     fbo.draw(currentPosition.x, currentPosition.y, width, height);
+    if (children.size() > 0) {
+        for (std::vector<textArea>::iterator it = children.begin(); it != children.end(); ++it) {
+            it->draw(ofPoint(it->x, it->y));
+        }
+    }
     glDisable(GL_BLEND);
     fbo.getTextureReference().unbind();
 }
@@ -98,7 +134,7 @@ textArea::Settings::Settings() {
     fontName = "Lato-Bla";
     textColor = ofColor::white;
     shadowColor = ofColor::black;
-    backgroundColor = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
+    backgroundColor = ofColor(ofRandom(255), ofRandom(255), ofRandom(255), 255);
     fontSize = 14;
 	width = 0;
 	height = 0;
@@ -115,4 +151,8 @@ textArea::Settings::Settings() {
     shadowX = 0;
     shadowY = 0;
     isShadow = true;
+    verticalAlignment = BOTTOM;
+    horizontalAlignment = LEFT;
+    boxHeight = FIXED_HEIGHT;
+    boxWidth = FIXED_WIDTH;
 }

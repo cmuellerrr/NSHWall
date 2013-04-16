@@ -63,10 +63,16 @@ void articleTile::set(int id, string title, string content, ofRectangle gridRect
     ostringstream convert;
     convert << ofRandom(25555);
     randContent = convert.str();
-    textAreaSettings.textContent = randContent;
+    textAreaSettings.textContent = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.";
     textAreaSettings.isShadow = true;
     textAreaSettings.shadowX = 1;
     textAreaSettings.shadowY = 1;
+    textAreaSettings.paddingLeft = 10;
+    textAreaSettings.paddingRight = 10;
+    textAreaSettings.paddingTop = 10;
+    textAreaSettings.paddingBottom = 10;
+    textAreaSettings.fontSize = 10;
+    textAreaSettings.verticalAlignment = textArea::TOP;
 
     mainTextArea = textArea(textAreaSettings);
 	
